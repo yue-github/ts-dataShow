@@ -1,0 +1,67 @@
+import { Comunication } from "./comunication";
+
+export class StaticCom extends Comunication {
+    public func1(arg: any) {
+        let json : any = [
+            {
+                count: 1500,
+                color: '#28FF28',
+                dyLineX: 0,
+                dyLineY: 0,
+                countX: -340,
+                countY: -150,
+                name : '正常企业',
+                percent : 0
+            },
+            {
+                count: 500,
+                color: 'pink',
+                dyLineX: 0,
+                dyLineY: 0,
+                countX: 230,
+                countY: -150,
+                name : '轻微异常',
+                percent : 0
+            },
+            {
+                count: 45,
+                color: 'yellow',
+                dyLineX: 0,
+                dyLineY: 0,
+                countX: -340,
+                countY: 250,
+                name : '一般异常',
+                percent : 0
+            },
+            {
+                count: 15,
+                color: 'red',
+                dyLineX: 0,
+                dyLineY: 0,
+                countX: 230,
+                countY: 250,
+                name : '严重异常',
+                percent : 0
+            }
+        ]
+        return json;
+    }
+    public func2(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func3(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func4(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func5(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func6(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func7(arg: any) {
+        
+    }
+}

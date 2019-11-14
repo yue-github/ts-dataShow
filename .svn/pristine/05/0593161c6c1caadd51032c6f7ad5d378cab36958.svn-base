@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>注册</title>
+  <link rel="stylesheet" href="./css/register.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- 左边图片部分 -->
+    <div class="left">
+      <img class="left-image" src="./images/login-register.jpg" alt="image">
+    </div>
+    <!-- 左边图片部分结束 -->
+
+    <!-- 右边注册部分 -->
+    <div class="right">
+      <div class="header-box">
+        <span>用户注册</span>
+      </div>
+      <div id="tip" class="tip"></div>
+      <div class="login-box">
+        <div class="phone-input">
+          <input id="phone" type="text" placeholder="请输入手机号码" required autocomplete="off"/>
+        </div>
+        <div class="password-input">
+          <input id="password" type="password" placeholder="请输入密码" required autocomplete="off"/>
+        </div>
+        <div class="repassword-input">
+          <input id="repassword" type="password" placeholder="请确认密码" required autocomplete="off"/>
+        </div>
+        <div class="email-input">
+          <input id="email" type="email" placeholder="请输入邮箱地址" required autocomplete="off"/>
+        </div>
+        <div class="button-box">
+          <button id="submit" class="button">注册</button>
+        </div>
+      </div>
+    </div>
+    <!-- 右边注册部分结束 -->
+  </div>
+
+  <script src="./dst/js/register.js"></script>
+</body>
+
+</html>

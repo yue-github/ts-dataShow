@@ -1,0 +1,45 @@
+define(["require", "exports", "./easing"], function (require, exports, easing_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class TimeSlice {
+        constructor(start, duration, en) {
+            this.time = 0;
+            this.start = 0;
+            this.end = 0;
+            this.duration = 0;
+            this.value = 0;
+            this.animateType = null;
+            this.start = start;
+            this.duration = duration;
+            this.end = start + duration;
+            this.easing = easing_1.Easing.find(en);
+            this.reset();
+            this.animateType = en;
+        }
+        reset() {
+            this.time = 0;
+            this.value = 0;
+        }
+        getEndTime() {
+            return this.end;
+        }
+        setValueOne(v) {
+            this.value = v;
+        }
+        getAnimateType() {
+            return this.animateType;
+        }
+        update(dt) {
+            this.time += dt;
+            if (this.time >= this.start && this.time <= this.end) {
+                let t = this.time - this.start;
+                let v = t / this.duration;
+                this.value = this.easing(v);
+            }
+        }
+        getValue() {
+            return this.value;
+        }
+    }
+    exports.TimeSlice = TimeSlice;
+});

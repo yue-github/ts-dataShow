@@ -1,0 +1,202 @@
+import { Component2D } from "./component2d";
+
+export class Component3 extends Component2D {
+
+    private canvas6Json: any;
+    private countTestData: number;
+    private canvas6JsonClone: any;
+    private circleR: any;
+
+
+    
+
+
+    public setTarget(arg: any): void {
+        arg.then(arg=>{
+            console.log(arg)
+        let json : any = [
+            {
+                count: 80
+            },
+            {
+                count: 50
+            }
+        ]
+
+        arg ? this.canvas6Json = arg : this.canvas6Json = json;
+
+        if(this.canvas6Json) {
+            let arr: any = [];
+            for (let obj of this.canvas6Json){
+                let cloneObj= {...obj};
+                arr.push(cloneObj);
+            }
+            this.canvas6JsonClone = arr;
+        }
+        
+        if (!this.isPlaying()) {
+            this.start();
+        }
+
+    })
+    }
+    
+    public constructor(id: string) {
+        super(id);
+        this.addTimeSlice(0, 2, "linear");
+        this.addTimeSlice(0, 2, "linear");
+        this.staticInit();
+        // this.node.style.transform = 'scale(0.7)';
+        this.context.scale(0.8,0.8);
+        this.context.translate(33,-20);
+    }
+
+    protected update(): void {
+        if(this.canvas6Json){
+            for(let index in this.canvas6Json) {
+                this.canvas6Json[index].count = this.canvas6JsonClone[index].count * this.getTime(parseInt(index));
+            }
+        }
+    }
+    
+    protected render(): void {
+           
+        let ctx: CanvasRenderingContext2D | null = this.context;
+        // let img = new Image();
+        // img.src = "C:/Users/zgg/Desktop/项目/可视化项目/data-visualization/src/yibiaopan.png";
+        // let img1 = new Image();
+        // img1.src = "C:/Users/zgg/Desktop/项目/可视化项目/data-visualization/src/11.png";
+
+    
+        if(ctx) {
+            // ctx.clearRect(0 ,0, this.width, this.height);
+            // ctx.beginPath();
+            // ctx.rect(0, 0, 500, 80);
+            // ctx.fill();
+            // cxt.closePath();
+            ctx.beginPath();
+            ctx.clearRect(0, 0,700, 480);
+            ctx.closePath();
+
+      
+            ctx.fillStyle = 'rgba(45,51,67,1)';
+            ctx.fillRect(0, 0,700, 480);
+
+
+            //绘制二次贝塞尔曲线
+            if (this.canvas6Json) {
+                // ctx.beginPath();
+                // ctx.moveTo(100, 200); //起始点
+                // var cp1x = 250, cp1y = 150;  //控制点
+                // var x = 300, y = 200; // 结束点
+                // ctx.quadraticCurveTo(100 + this.canvas6Json[0].count, cp1y, x, y);
+                // ctx.fillStyle = '#9aaadd';
+                // ctx.fill();
+
+                // 企业开机率
+                //边框圆
+                ctx.beginPath();
+                ctx.lineWidth=7;
+                // ctx.strokeStyle="#2956c9";
+                var gradient=ctx.createLinearGradient(0,300,0,0);
+                gradient.addColorStop(0,"#2956c9");
+                // gradient.addColorStop(0.5,"#2482c8");
+                gradient.addColorStop(1.0,"#70d7f1");
+                // 用渐变进行填充
+                ctx.strokeStyle=gradient;
+                ctx.arc(100, 200, 100, 0,360, false);
+                ctx.stroke();
+
+
+                //内圆
+                ctx.beginPath();
+                ctx.arc(100, 200, 90, 0,360, false);
+                ctx.fillStyle = 'rgba(81,125,243,0.1)';
+                ctx.fill();
+
+                 //值
+                ctx.beginPath();
+                var grd=ctx.createLinearGradient(0,300,0,120);
+                grd.addColorStop(0,"#065bf6");
+                grd.addColorStop(1,"#70d7f1");
+                    // 填充渐变
+                ctx.fillStyle=grd;
+                ctx.arc(100, 200, 90,(0.5 - this.canvas6Json[0].count * 0.01) * Math.PI,(0.5 + this.canvas6Json[0].count * 0.01) * Math.PI);
+                ctx.fill();
+
+                //字体
+                ctx.fillStyle="#ffffff";
+                ctx.font="20px Arial";
+                let numbers = Math.round(this.canvas6Json[0].count)  + '%'
+                ctx.fillText("设备在线率",50,205);
+                //数字
+                ctx.font="30px Arial";
+                ctx.fillStyle = '#fff602';
+                ctx.fillText(numbers,72,255);
+
+                // 设备在线率
+                 //边框圆
+                ctx.beginPath();
+                ctx.lineWidth=7;
+                // ctx.strokeStyle="#2956c9";
+                var gradient=ctx.createLinearGradient(0,300,0,0);
+                gradient.addColorStop(0,"#2956c9");
+                // gradient.addColorStop(0.5,"#2482c8");
+                gradient.addColorStop(1.0,"#70d7f1");
+                // 用渐变进行填充
+                ctx.strokeStyle=gradient;
+                ctx.arc(500, 200, 100, 0,360, false);
+                ctx.stroke();
+
+
+                //内圆
+                ctx.beginPath();
+                ctx.arc(500, 200, 90, 0,360, false);
+                ctx.fillStyle = 'rgba(81,125,243,0.1)';
+                ctx.fill();
+
+                //值
+                ctx.beginPath();
+                var grd=ctx.createLinearGradient(0,300,0,120);
+                grd.addColorStop(0,"#065bf6");
+                grd.addColorStop(1,"#70d7f1");
+                    // 填充渐变
+                ctx.fillStyle=grd;
+                ctx.arc(500, 200, 90,(0.5 - this.canvas6Json[1].count * 0.01) * Math.PI,(0.5 + this.canvas6Json[1].count * 0.01) * Math.PI);
+                ctx.fill();
+
+                //字体
+                ctx.fillStyle="#ffffff";
+                ctx.font="20px Arial";
+                let numbers1 = Math.round(this.canvas6Json[1].count)  + '%'
+                ctx.fillText("企业开机率",450,205);
+                //数字
+                ctx.font="30px Arial";
+                ctx.fillStyle = '#fff602';
+                ctx.fillText(numbers1,472,255);
+
+
+            }
+            
+         }
+          
+    }
+
+      /**
+     * 渲染静态
+     */
+    protected staticInit(): void {
+        let ctx: CanvasRenderingContext2D | null = this.context;
+        let img = new Image();
+        // img.src = "C:/Users/zgg/Desktop/项目/可视化项目/data-visualization/src/yibiaopan.png";
+        if(ctx){
+            ctx.beginPath();
+            ctx.clearRect(0, 0,700, 480);
+            ctx.closePath();
+
+
+            ctx.drawImage(img,100,100,599,362);
+        }
+    }
+
+}

@@ -1,0 +1,98 @@
+import { Component1 } from "./component1";
+import { Component2 } from "./component2";
+import { Component3 } from "./component3";
+import { Component4 } from "./component4";
+import { Component5 } from "./component5";
+import { Component6 } from "./component6";
+import { Component7 } from "./component7";
+import { Component8 } from "./component8";
+import { Comunication } from "./comunication";
+import { StaticCom } from "./staticcom";
+import { DynamicCom } from "./dynamiccom";
+
+document.onmouseup = function () {
+    document.onmousemove = null;
+}
+
+const windowNdoe:HTMLElement = document.querySelector('.window-box');
+const create:HTMLElement = document.querySelector('.add');
+const reduce:HTMLElement = document.querySelector('.reduce');
+const refresh:HTMLElement = document.querySelector('.refresh');
+
+let comp1 = new Component1("canvas1");
+let comp2 = new Component2("canvas2");
+let comp3 = new Component3("canvas3");
+let comp4 = new Component4("canvas4");
+let comp5 = new Component5("canvas5");
+let comp6 = new Component6("canvas6");
+let comp7 = new Component7("canvas7");
+let comp8 = new Component8("canvas8");
+let debug = true;
+
+// comp7.clickMap();
+comp7.click(windowNdoe);
+comp7.mouseWhell(create,reduce,refresh);
+
+let com: Comunication;
+if (debug) com = new StaticCom();
+else com = new DynamicCom();
+
+
+let ret = com.func1(null);
+comp1.setTarget(ret);
+ret = com.func2(null);
+comp2.setTarget(ret);
+ret = com.func3(null);
+comp3.setTarget(ret);
+ret = com.func4(null);
+comp4.setTarget(ret);
+ret = com.func5(null);
+comp5.setTarget(ret);
+ret = com.func6(null);
+comp6.setTarget(ret);
+ret = com.func7(null);
+comp7.setTarget(ret);
+ret = com.func8(null);
+comp8.setTarget(ret);
+
+setInterval(function() {
+    let incId = localStorage["incId"];
+    let ret = com.func1(null);
+    comp1.setTarget(ret);
+    ret = com.func2(incId);
+    comp2.setTarget(ret);
+    ret = com.func3(incId);
+    comp3.setTarget(ret);
+    ret = com.func4(null);
+    comp4.setTarget(ret);
+    ret = com.func5(null);
+    comp5.setTarget(ret);
+	ret = com.func6(incId);
+    comp6.setTarget(ret);
+    ret = com.func7(null);
+    comp7.setTarget(ret);
+   
+}, 6000);
+
+setInterval(function() {
+   
+    let ret = com.func4(null);
+    comp4.setTarget(ret);
+    ret = com.func5(null);
+    comp5.setTarget(ret);
+    ret = com.func8(null);
+    comp8.setTarget(ret);
+   
+}, 300000);
+let beforeIncId = '';
+setInterval(res=>{
+    if(localStorage["incId"] != beforeIncId){
+        beforeIncId =  localStorage["incId"];
+        ret = com.func2(beforeIncId);
+        comp2.setTarget(ret);
+        ret = com.func3(beforeIncId);
+        comp3.setTarget(ret);
+        ret = com.func6(beforeIncId);
+        comp6.setTarget(ret);
+    }
+},1000)

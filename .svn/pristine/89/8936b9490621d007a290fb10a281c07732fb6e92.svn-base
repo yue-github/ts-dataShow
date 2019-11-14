@@ -1,0 +1,89 @@
+define(["require", "exports", "./comunication", "./ajax"], function (require, exports, comunication_1, ajax_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class StaticCom extends comunication_1.Comunication {
+        func1(arg) {
+            let promise = new Promise((resolve, index) => {
+                let json = [
+                    {
+                        count: 1500,
+                        color: '#28FF28',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: -340,
+                        countY: -150,
+                        name: '正常企业',
+                        percent: 0
+                    },
+                    {
+                        count: 500,
+                        color: 'pink',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: 230,
+                        countY: -150,
+                        name: '轻微异常',
+                        percent: 0
+                    },
+                    {
+                        count: 45,
+                        color: 'yellow',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: -340,
+                        countY: 250,
+                        name: '一般异常',
+                        percent: 0
+                    },
+                    {
+                        count: 15,
+                        color: 'red',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: 230,
+                        countY: 250,
+                        name: '严重异常',
+                        percent: 0
+                    }
+                ];
+                let ajax = new ajax_1.Ajax();
+                let url = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/entDataStatistic';
+                let data = 'accessToken=aLEqzyCYXOJswAVyY5UjLdbaOWCw7h_9vbR4u1-tk-5cAKCzMAcMe_V7yIR4AHe26vOniYoXv9fajl1nUCDzRyEQFa68fHFqqudLzWeGYfVSEOFc5YcTqGJafIL9D12rpeAMPqsSHHnyDYTnoZAO2xO2Kbg4GgcV1Jto0qKe8YZpfxkJs23AKqaH5Q3TlzLvJ0uacMG6L-uKrBmcUM50l0ZHcSYkAMg3hiEZazjK7dJdz-yOqp6UBvH6U32fniM97v74pxJh8RZze277_0XtGTIRCxa37hHovj51Uob8T3HUxQiLyVunB5S0uroat8Dv0jmpGp7cxG3i68yCi1l0l0TqO6UxcAgzCrFO8es2Y--U7rChCV2GeNi3PpgbjTrex8QwZiqYH2QKCL09-svUmoKH0DElhxy-M_1pTZ5cc1W-w1g3c6at7Wp8gvRx51FVpPgVG1Ue6bFWkjl-6lw6t8yiBlM';
+                let a = ajax.post(url, data);
+                a.then(res => {
+                    json.map((item, index) => {
+                        switch (index) {
+                            case 0:
+                                return item.count = res.normalCount;
+                            case 1:
+                                return item.count = res.mildAbnormal;
+                            case 2:
+                                return item.count = res.abnormalCount;
+                            case 3:
+                                return item.count = res.serAbnormalCount;
+                        }
+                    });
+                    resolve(json);
+                });
+            });
+            return promise;
+        }
+        func2(arg) {
+            // let ajax = new Ajax();
+            // let url = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/barDiagramDevice';
+            // let data = 'accessToken=aLEqzyCYXOJswAVyY5UjLdbaOWCw7h_9vbR4u1-tk-5cAKCzMAcMe_V7yIR4AHe26vOniYoXv9fajl1nUCDzRyEQFa68fHFqqudLzWeGYfVSEOFc5YcTqGJafIL9D12rpeAMPqsSHHnyDYTnoZAO2xO2Kbg4GgcV1Jto0qKe8YZpfxkJs23AKqaH5Q3TlzLvJ0uacMG6L-uKrBmcUM50l0ZHcSYkAMg3hiEZazjK7dJdz-yOqp6UBvH6U32fniM97v74pxJh8RZze277_0XtGTIRCxa37hHovj51Uob8T3HUxQiLyVunB5S0uroat8Dv0jmpGp7cxG3i68yCi1l0l0TqO6UxcAgzCrFO8es2Y--U7rChCV2GeNi3PpgbjTrex8QwZiqYH2QKCL09-svUmoKH0DElhxy-M_1pTZ5cc1W-w1g3c6at7Wp8gvRx51FVpPgVG1Ue6bFWkjl-6lw6t8yiBlM'
+            // arg=ajax.post(url,data)
+        }
+        func3(arg) {
+        }
+        func4(arg) {
+        }
+        func5(arg) {
+        }
+        func6(arg) {
+        }
+        func7(arg) {
+        }
+    }
+    exports.StaticCom = StaticCom;
+});

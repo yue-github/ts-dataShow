@@ -1,0 +1,393 @@
+define(["require", "exports", "./component2d"], function (require, exports, component2d_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Component5 extends component2d_1.Component2D {
+        /**
+         * 构造函数
+         * @param id canvas标签的id
+         */
+        constructor(id) {
+            super(id);
+            // canvas的属性
+            this.cWidth = 0; // 折线图的宽度
+            this.cHeight = 0; // 折线图的高度
+            this.cMargin = 0;
+            this.cSpace = 0;
+            // 原点的坐标
+            this.originX = 0;
+            this.originY = 0;
+            // 折线图属性
+            this.tobalDots = 0; // 折线图的x轴为几等分
+            this.dotSpace = 0; // x轴每个格子的宽度
+            this.maxValue = 0; // y轴的最大值
+            this.totalYNumber = 0; // 折线图的y轴为几等分
+            // 运动相关
+            this.ctr = 0; // 计数器，当等于numctr的时候就不在绘制了
+            this.numctr = 0; // numctr * speed 等于绘制所花费的时间
+            this.speed = 0; // 每个多少ms绘制一次视图
+            // 颜色数组
+            this.colorList = ['#2C9BFE', '#5A598E', '#54C37A'];
+            // json
+            this.json = [
+                [
+                    {
+                        time: '1号',
+                        number: 492
+                    },
+                    {
+                        time: '2号',
+                        number: 1050
+                    },
+                    {
+                        time: '3号',
+                        number: 800
+                    },
+                    {
+                        time: '4号',
+                        number: 879
+                    },
+                    {
+                        time: '5号',
+                        number: 700
+                    },
+                    {
+                        time: '6号',
+                        number: 777
+                    }
+                ],
+                [
+                    {
+                        time: '1号',
+                        number: 20
+                    },
+                    {
+                        time: '2号',
+                        number: 54
+                    },
+                    {
+                        time: '3号',
+                        number: 77
+                    },
+                    {
+                        time: '4号',
+                        number: 30
+                    },
+                    {
+                        time: '5号',
+                        number: 55
+                    },
+                    {
+                        time: '6号',
+                        number: 30
+                    }
+                ],
+                [
+                    {
+                        time: '1号',
+                        number: 70
+                    },
+                    {
+                        time: '2号',
+                        number: 99
+                    },
+                    {
+                        time: '3号',
+                        number: 30
+                    },
+                    {
+                        time: '4号',
+                        number: 13
+                    },
+                    {
+                        time: '5号',
+                        number: 44
+                    },
+                    {
+                        time: '6号',
+                        number: 77
+                    }
+                ]
+            ];
+            // 设置canvas的大小
+            this.node.width = 530;
+            this.node.height = 300;
+            this.initData(this.json);
+        }
+        /**
+         * 返回输入的数组中的最大值（相当于求y轴的最大值）
+         * @param data JSON数据
+         */
+        getMaxNumByY(data) {
+            let maxNum = 0;
+            for (let i = 0; i < data.length; i++) {
+                for (let j = 0; j < data[i].length; j++) {
+                    if (data[i][j].number > maxNum) {
+                        maxNum = data[i][j].number;
+                    }
+                }
+            }
+            return maxNum;
+        }
+        /**
+         * 返回x轴几等分的值（相当于求数据中数组的length）
+         * @param data JSON数据
+         */
+        getMaxNumByX(data) {
+            let maxX = 0;
+            for (let i = 0; i < data.length; i++) {
+                maxX = data[i].length;
+            }
+            return maxX;
+        }
+        /**
+         * 初始化
+         * @param dataArr 模拟的JSON数据
+         */
+        initData(dataArr) {
+            this.canvas = this.node;
+            this.canvas.style.background = '#2D3343'; // 设置背景色
+            this.ctx = this.context;
+            this.cMargin = 75;
+            this.cSpace = 90;
+            // this.cWidth = this.width - this.cMargin - this.cSpace;
+            this.cWidth = this.width - this.cMargin;
+            // this.cHeight = this.height - this.cMargin - this.cSpace
+            this.cHeight = this.height - this.cMargin - 400;
+            // this.originX = this.cMargin + this.cSpace
+            this.originX = this.cSpace;
+            this.originY = this.cMargin + this.cHeight;
+            // 求出折线图信息
+            // y轴的最大值maxValue等于数据中的最大值
+            this.maxValue = this.getMaxNumByY(this.json);
+            // 将y轴的最大值加上100(这样就不会有坐标点在最上面)赋给maxValue
+            this.maxValue += 300;
+            // totalDots: x轴为几等分
+            this.tobalDots = this.getMaxNumByX(dataArr);
+            // dotSpace: x轴每个格子的宽度
+            this.dotSpace = this.cWidth / this.tobalDots;
+            this.dotSpace = Number(this.dotSpace.toFixed(0));
+            // 将y几等分
+            this.totalYNumber = 6;
+            // 运动相关
+            this.ctr = 1;
+            this.numctr = 200;
+            this.speed = 6;
+            // 当只绘制1像素的线的时候，坐标点需要偏移，这样才能画出1像素实线
+            this.ctx.translate(0.5, 0.5);
+            // 绘制坐标轴
+            this.drawingAxes();
+            // 绘制标记
+            this.drawMarkers();
+            // 绘制折线与动画
+            this.drawLineAnimate(this.json);
+        }
+        /**
+         * 绘制坐标轴
+         */
+        drawingAxes() {
+            // 设置样式
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = '#777F92';
+            // 绘制X轴
+            // this.drawLine(this.originX, this.originY, this.originX + this.cWidth, this.originY)
+            this.drawLine(this.originX, this.originY, this.originX + this.cWidth - this.dotSpace - 3, this.originY);
+            // 绘制Y轴
+            this.drawLine(this.originX, this.originY, this.originX, this.cMargin);
+        }
+        /**
+         * 绘制标记
+         */
+        drawMarkers() {
+            // 先清空y轴和x轴旁边的文字
+            this.ctx.clearRect(0, this.cMargin - 10, this.cSpace - 5, this.cHeight + 15);
+            this.ctx.clearRect(0, this.cHeight + this.cMargin + 20, this.cSpace + this.cWidth, 30);
+            // 设置样式
+            this.ctx.font = '14px Arial';
+            this.ctx.fillStyle = '#a5aabd';
+            this.ctx.strokeStyle = '#a5aabd';
+            // 绘制y轴上的横线
+            // yInterval: y轴上横线的间隔
+            let yInterval = this.maxValue / this.totalYNumber;
+            yInterval = Number(yInterval.toFixed(0));
+            // 设置y轴文本的对齐方式
+            this.ctx.textAlign = 'right';
+            // 绘制线段及添加文本
+            for (let i = 0; i <= this.totalYNumber; i++) {
+                let markerVal = i * yInterval;
+                // 设置文字与y轴上横线的位置
+                let xMarker = this.originX - 15; // 减去15表示相对于x往左移动15个像素
+                // 绘制的坐标系的原点和坐标轴与canvas的原点和坐标轴不同, canvas绘制的时候y轴上的线的时候,
+                // 坐标是从上往下, 由0 ~ x算起, 而绘制的坐标系的y轴是从下往上, 由0 ~ x算起 
+                // 假如现在的要绘制一条从a(x, y)到b(X, Y)的y轴上的线段,
+                // canvas绘制的b坐标需要变成(x + 坐标轴的宽度, y轴高度 * (1 - 每条横线间隔所占y轴高度的比例))
+                // 要用 1 去减, 是因为最开始绘制的线, 在canvas上的y坐标是最大的
+                // 绘制的折线图的y轴与canvas的y轴是相反的
+                let yMarker = Number((this.cHeight * (1 - markerVal / this.maxValue) + this.cMargin).toFixed(0));
+                // 绘制y轴上的横线, 与x轴重叠的横线可以不用画
+                if (i > 0) {
+                    // this.drawLine(this.originX, yMarker, this.originX + this.cWidth, yMarker);
+                }
+                // 绘制文本
+                this.ctx.fillText(markerVal.toString(), xMarker, yMarker, this.cSpace);
+            }
+            // 绘制x轴的竖线
+            this.ctx.textAlign = 'center';
+            // 设置样式
+            this.ctx.strokeStyle = '#777F92';
+            // totalDots: 将x轴分为几等分; dotSpace: x轴每个格子的宽度
+            for (let i = 0; i < this.tobalDots; i++) {
+                // 每条竖线下面显示的文字
+                let text = this.json[0][i].time;
+                let xMarker = this.originX + this.dotSpace * i;
+                let yMarker = this.originY + 30;
+                // 绘制竖线
+                // if (i > 0) {
+                //     this.drawLine(xMarker, this.originY - 2, xMarker, this.cMargin + this.cHeight + 5)
+                // }
+                // this.drawLine(xMarker, this.originY - 2, xMarker, this.cMargin + this.cHeight + 5);
+                // 绘制文字
+                this.ctx.fillText(text, xMarker, yMarker, this.cSpace);
+            }
+        }
+        /**
+         * 绘制折线和动画
+         * @param dataArr json数据
+         */
+        drawLineAnimate(dataArr) {
+            // dataArr中有多个数组，每个数组代表了一条折线
+            for (let i = 0; i < dataArr.length; i++) {
+                this.ctx.strokeStyle = this.colorList[i];
+                // 绘制折线
+                this.ctx.beginPath();
+                for (let j = 0; j < this.tobalDots; j++) {
+                    let dotVal = dataArr[i][j].number;
+                    let barH = Number((this.cHeight * dotVal / this.maxValue * this.ctr / this.numctr).toFixed(0));
+                    let x = this.originX + this.dotSpace * j;
+                    let y = this.originY - barH;
+                    if (j == 0) {
+                        this.ctx.moveTo(x, y);
+                    }
+                    else {
+                        this.ctx.lineTo(x, y);
+                    }
+                }
+                this.ctx.stroke();
+            }
+            if (this.ctr < this.numctr) {
+                this.ctr++;
+                setTimeout(() => {
+                    this.ctx.clearRect(0, 0, this.width, this.height);
+                    this.drawingAxes();
+                    this.drawLineAnimate(this.json);
+                    this.drawMarkers();
+                    this.drwaInstructions();
+                }, this.speed);
+            }
+        }
+        /**
+     * 绘制折线但不需要动画，当接口有数据返回时调用这个方法
+     * @param dataArr json数据
+     */
+        drawLineNotAnimate(dataArr) {
+            // 先清空已有的折线
+            this.ctx.clearRect(this.originX - 2, this.cMargin, this.cWidth, this.cHeight);
+            // dataArr中有多个数组，每个数组代表了一条折线
+            for (let i = 0; i < dataArr.length; i++) {
+                this.ctx.strokeStyle = this.colorList[i];
+                // 绘制折线
+                this.ctx.beginPath();
+                for (let j = 0; j < this.tobalDots; j++) {
+                    let dotVal = dataArr[i][j].number;
+                    // let barH: number = Number((this.cHeight * dotVal / this.maxValue * this.ctr / this.numctr).toFixed(0));
+                    let x = this.originX + this.dotSpace * j;
+                    // let y = this.originY - (this.cHeight - (dotVal / this.maxValue) * this.cHeight) - this.cMargin
+                    let y = (1 - dotVal / this.maxValue) * this.cHeight + this.cMargin;
+                    if (j == 0) {
+                        this.ctx.moveTo(x, y);
+                    }
+                    else {
+                        this.ctx.lineTo(x, y);
+                    }
+                }
+                this.ctx.stroke();
+                this.ctx.closePath();
+            }
+        }
+        /**
+         * 绘制点
+         * @param x 要绘制的点的x坐标
+         * @param y 要绘制的点的y坐标
+         */
+        drawArc(x, y, color) {
+            this.ctx.beginPath();
+            this.ctx.fillStyle = color;
+            this.ctx.arc(x, y, 1, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.closePath();
+        }
+        /**
+         * 绘制图表的说明内容
+         */
+        drwaInstructions() {
+            // 绘制标识
+            // 1. 绘制一个圆
+            this.ctx.beginPath();
+            this.ctx.fillStyle = '#54C37A';
+            this.ctx.arc(55, 30, 15, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.closePath();
+            // 2. 绘制文字
+            this.ctx.fillStyle = '#C8CDD6';
+            this.ctx.font = '18px Arial';
+            this.ctx.fillText('8', 55, 37);
+            this.ctx.fillText('历史数据', 115, 37);
+            // 绘制文字
+            this.ctx.font = '14px Arial';
+            this.ctx.fillText('正常企业', 240, 37);
+            this.ctx.fillText('异常企业', 340, 37);
+            this.ctx.fillText('离线企业', 440, 37);
+            // 绘制小方块
+            this.ctx.fillStyle = '#2C9BFE';
+            this.ctx.fillRect(190, 27, 10, 10);
+            this.ctx.fillStyle = '#5A598E';
+            this.ctx.fillRect(290, 27, 10, 10);
+            this.ctx.fillStyle = '#54C37A';
+            this.ctx.fillRect(390, 27, 10, 10);
+        }
+        /**
+         * 绘制一条从点(x, y)到点(X, Y)的线段
+         * @param x ctx.moveTo(x, y)方法的第一个参数
+         * @param y ctx.moveTo(x, y)方法的第二个参数
+         * @param X ctx.lineTo(x, y)方法的第一个参数
+         * @param Y ctx.lineTo(x, y)方法的第二个参数
+         */
+        drawLine(x, y, X, Y) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, y);
+            this.ctx.lineTo(X, Y);
+            this.ctx.stroke();
+            this.ctx.closePath();
+        }
+        setTarget(arg) {
+            // 假如这里从接口获取数据后将值赋给dataArr
+            // console.log('调用我了11')
+            if (arg !== undefined) {
+                // console.log(arg);
+                this.json = arg;
+                // y轴的最大值maxValue等于数据中的最大值
+                this.maxValue = this.getMaxNumByY(this.json);
+                this.maxValue += 300;
+                this.drawLineNotAnimate(this.json);
+                this.drawingAxes();
+                this.drawMarkers();
+            }
+        }
+        update() {
+            // throw new Error("Method not implemented.");
+        }
+        render() {
+            // throw new Error("Method not implemented.");
+        }
+    }
+    exports.Component5 = Component5;
+});

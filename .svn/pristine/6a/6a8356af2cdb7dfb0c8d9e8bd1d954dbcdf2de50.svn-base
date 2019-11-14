@@ -1,0 +1,526 @@
+define(["require", "exports", "./comunication", "./Ajax"], function (require, exports, comunication_1, Ajax_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class StaticCom extends comunication_1.Comunication {
+        func1(arg) {
+            let promise = new Promise((resolve, index) => {
+                let json = [
+                    {
+                        count: 1500,
+                        color: '#28FF28',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: -340,
+                        countY: -150,
+                        name: '正常企业',
+                        percent: 0
+                    },
+                    {
+                        count: 500,
+                        color: 'pink',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: 230,
+                        countY: -150,
+                        name: '轻微异常',
+                        percent: 0
+                    },
+                    {
+                        count: 45,
+                        color: 'yellow',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: -340,
+                        countY: 250,
+                        name: '一般异常',
+                        percent: 0
+                    },
+                    {
+                        count: 15,
+                        color: 'red',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: 230,
+                        countY: 250,
+                        name: '严重异常',
+                        percent: 0
+                    }
+                ];
+                let ajax = new Ajax_1.Ajax();
+                let url = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/entDataStatistic';
+                let url1 = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/entDataStatistic?accessToken=' + localStorage["token"];
+                let token = localStorage["token"], data;
+                if (token) {
+                    data = `accessToken=${token}`;
+                }
+                else {
+                    window.location.href = './login.html';
+                }
+                let a = ajax.post(url, data);
+                let abc = ajax.ajax(url1, function (res) { }, function (fail) { });
+                // console.log(abc)
+                abc.then(res => {
+                    json.map((item, index) => {
+                        switch (index) {
+                            case 0:
+                                return item.count = res.result.normalCount;
+                            case 1:
+                                return item.count = res.result.mildAbnormal;
+                            case 2:
+                                return item.count = res.result.abnormalCount;
+                            case 3:
+                                return item.count = res.result.serAbnormalCount;
+                        }
+                    });
+                    resolve(json);
+                });
+            });
+            return promise;
+        }
+        func2(arg) {
+            arg = arg ? arg : '46c054cb-15f1-4d05-90e8-0a22548488fa';
+            let promise = new Promise((resolve, reject) => {
+                let json = [
+                    {
+                        name: '初装',
+                        number: 6
+                    },
+                    {
+                        name: '调试',
+                        number: 2
+                    },
+                    {
+                        name: '故障',
+                        number: 10
+                    },
+                    {
+                        name: '保修',
+                        number: 3
+                    },
+                    {
+                        name: '维修',
+                        number: 7
+                    }
+                ];
+                let ajax = new Ajax_1.Ajax();
+                let url = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/barDiagramDevice';
+                let url1 = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/barDiagramDevice?accessToken=' + localStorage["token"];
+                let data2 = localStorage["token"];
+                // console.log(data2)
+                let data = 'accessToken=' + data2;
+                let a = ajax.post(url, data);
+                let abc = ajax.ajax(url1, function (res) { }, function (fail) { });
+                abc.then(res => {
+                    json.map((item, index) => {
+                        switch (index) {
+                            case 0:
+                                return item.number = res.result.initialAssembly;
+                            case 1:
+                                return item.number = res.result.debug;
+                            case 2:
+                                return item.number = res.result.fault;
+                            case 3:
+                                return item.number = res.result.repairs;
+                            case 4:
+                                return item.number = res.result.maintain;
+                        }
+                    });
+                    resolve(json);
+                });
+            });
+            return promise;
+        }
+        func3(arg) {
+            arg = arg ? arg : '46c054cb-15f1-4d05-90e8-0a22548488fa';
+            let promise = new Promise((resolve, index) => {
+                let json = [
+                    {
+                        count: 80
+                    },
+                    {
+                        count: 50
+                    }
+                ];
+                let ajax = new Ajax_1.Ajax();
+                let url = 'http://data-visualization.bayou-tech.cn/web/equipment_statistic/equipmentRate';
+                let url1 = 'http://data-visualization.bayou-tech.cn/web/equipment_statistic/equipmentRate?accessToken=' + localStorage["token"] + '&incId=' + arg;
+                let token = localStorage["token"], data;
+                if (token) {
+                    data = `accessToken=${token}&incId=${arg}`;
+                }
+                else {
+                    window.location.href = './login.html';
+                }
+                let a = ajax.post(url, data);
+                let abc = ajax.ajax(url1, function (res) { }, function (fail) { });
+                abc.then(res => {
+                    json.map((item, index) => {
+                        switch (index) {
+                            case 0:
+                                return item.count = res.result.onLineRate;
+                            case 1:
+                                return item.count = res.result.runRate;
+                        }
+                    });
+                    resolve(json);
+                });
+            });
+            return promise;
+        }
+        func4(arg) {
+            let promise = new Promise((resolve, index) => {
+                let json;
+                if (localStorage['json']) {
+                    json = JSON.parse(localStorage['json']);
+                }
+                else {
+                    json = [[], []];
+                }
+                let ajax = new Ajax_1.Ajax();
+                let url1 = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/graphActualTimeData?accessToken=' + localStorage["token"];
+                let token = localStorage["token"], data;
+                if (token) {
+                    data = `accessToken=${token}`;
+                }
+                else {
+                    window.location.href = './login.html';
+                }
+                let abc = ajax.ajax(url1, function (res) { }, function (fail) { });
+                abc.then(res => {
+                    json.map((item, index) => {
+                        if (index == 0) {
+                            let obj = {
+                                time: '待定',
+                                number: 0
+                            };
+                            obj.time = res.result.time;
+                            obj.number = res.result.runEntCount;
+                            item.push(obj);
+                            localStorage["json"] = JSON.stringify(json);
+                            if (item.length < 9) {
+                                for (let a = item.length; a < 9; a++) {
+                                    item.push({
+                                        time: '待定',
+                                        number: 0
+                                    });
+                                }
+                            }
+                            else if (item.length == 9) {
+                                localStorage["json"] = JSON.stringify(json);
+                            }
+                            else {
+                                item.splice(1, 10);
+                                localStorage["json"] = JSON.stringify(json);
+                            }
+                        }
+                        else {
+                            let obj1 = {
+                                time: '待定',
+                                number: 0
+                            };
+                            obj1.time = res.result.time;
+                            obj1.number = res.result.abnormalEntCount;
+                            item.push(obj1);
+                            localStorage["json"] = JSON.stringify(json);
+                            if (item.length < 9) {
+                                for (let a = item.length; a < 9; a++) {
+                                    item.push({
+                                        time: '待定',
+                                        number: 0
+                                    });
+                                }
+                            }
+                            else if (item.length == 9) {
+                                localStorage["json"] = JSON.stringify(json);
+                            }
+                            else {
+                                item.splice(1, 10);
+                                localStorage["json"] = JSON.stringify(json);
+                            }
+                        }
+                    });
+                    console.log(json);
+                    resolve(json);
+                });
+            });
+            return promise;
+        }
+        func5(arg) {
+            let promise = new Promise((resolve, index) => {
+                let json = [
+                    [
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        }
+                    ],
+                    [
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        }
+                    ],
+                    [
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        },
+                        {
+                            time: '待定',
+                            number: 0
+                        }
+                    ]
+                ];
+                let ajax = new Ajax_1.Ajax();
+                let url = 'http://data-visualization.bayou-tech.cn/web/inc_evaluate/historyData';
+                let url1 = 'http://data-visualization.bayou-tech.cn/web/inc_evaluate/historyData?accessToken=' + localStorage["token"];
+                let token = localStorage["token"], data;
+                if (token) {
+                    data = `accessToken=${token}`;
+                }
+                else {
+                    window.location.href = './login.html';
+                }
+                let a = ajax.post(url, data);
+                let abc = ajax.ajax(url1, function (res) { }, function (fail) { });
+                abc.then(res => {
+                    let result = res.result;
+                    result.splice(0, 1);
+                    result.reverse();
+                    json.map((item, index) => {
+                        result.map((arr, num) => {
+                            let obj = {
+                                time: '待定',
+                                number: 0
+                            };
+                            if (index == 0) {
+                                obj.time = arr.date + '号';
+                                obj.number = arr.normalCount;
+                                item.unshift(obj);
+                                item.pop();
+                            }
+                            else if (index == 1) {
+                                obj.time = arr.date + '号';
+                                obj.number = arr.abnormalCount;
+                                item.unshift(obj);
+                                item.pop();
+                            }
+                            else {
+                                obj.time = arr.date + '号';
+                                obj.number = arr.offLine;
+                                item.unshift(obj);
+                                item.pop();
+                            }
+                        });
+                    });
+                    resolve(json);
+                });
+            });
+            return promise;
+        }
+        func6(arg) {
+            arg = arg ? arg : '46c054cb-15f1-4d05-90e8-0a22548488fa';
+            let promise = new Promise((resolve, index) => {
+                let json = [
+                    {
+                        id: 0,
+                        count: 150,
+                        color: '#28FF28',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: -340,
+                        countY: -150,
+                        name: 'UV',
+                        percent: 0
+                    },
+                    {
+                        id: 1,
+                        count: 23,
+                        color: 'red',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: 230,
+                        countY: -150,
+                        name: '活性炭',
+                        percent: 0
+                    },
+                    {
+                        id: 2,
+                        count: 45,
+                        color: 'yellow',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: -340,
+                        countY: 250,
+                        name: 'RCO',
+                        percent: 0
+                    },
+                    {
+                        id: 3,
+                        count: 32,
+                        color: 'pink',
+                        dyLineX: 0,
+                        dyLineY: 0,
+                        countX: 230,
+                        countY: 250,
+                        name: 'RTO',
+                        percent: 0
+                    }
+                ];
+                let ajax = new Ajax_1.Ajax();
+                let url = 'http://data-visualization.bayou-tech.cn/web/govern_fows/governFlows';
+                let url1 = 'http://data-visualization.bayou-tech.cn/web/govern_fows/governFlows?accessToken=' + localStorage["token"] + '&incId=46c054cb-15f1-4d05-90e8-0a22548488fa';
+                let token = localStorage["token"], data;
+                if (token) {
+                    data = `accessToken=${token}&incId=${arg}`;
+                }
+                else {
+                    window.location.href = './login.html';
+                }
+                let a = ajax.post(url, data);
+                let abc = ajax.ajax(url1, function (res) { }, function (fail) { });
+                abc.then(res => {
+                    json.map((item, index) => {
+                        switch (index) {
+                            case 0:
+                                return item.count = res.result.uv;
+                            case 1:
+                                return item.count = res.result.aca;
+                            case 2:
+                                return item.count = res.result.rco;
+                            case 3:
+                                return item.count = res.result.rto;
+                        }
+                    });
+                    resolve(json);
+                });
+            });
+            return promise;
+        }
+        func7(arg) {
+        }
+        func8(arg) {
+            let promise = new Promise((resolve, index) => {
+                let json = [
+                    {
+                        time: '待定',
+                        number: 0
+                    },
+                    {
+                        time: '待定',
+                        number: 0
+                    },
+                    {
+                        time: '待定',
+                        number: 0
+                    },
+                    {
+                        time: '待定',
+                        number: 0
+                    },
+                    {
+                        time: '待定',
+                        number: 0
+                    },
+                    {
+                        time: '待定',
+                        number: 0
+                    },
+                    {
+                        time: '待定',
+                        number: 0
+                    },
+                    {
+                        time: '待定',
+                        number: 0
+                    },
+                    {
+                        time: '待定',
+                        number: 0
+                    }
+                ];
+                let ajax = new Ajax_1.Ajax();
+                let url = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/graphActualTimeData';
+                let url1 = 'http://data-visualization.bayou-tech.cn/web/mobile_org_info/graphActualTimeData?accessToken=' + localStorage["token"];
+                let token = localStorage["token"], data;
+                if (token) {
+                    data = `accessToken=${token}`;
+                }
+                else {
+                    window.location.href = './login.html';
+                }
+                let a = ajax.post(url, data);
+                let abc = ajax.ajax(url1, function (res) { }, function (fail) { });
+                abc.then(res => {
+                    let obj = {
+                        time: '待定',
+                        number: 0
+                    };
+                    obj.time = res.result.time;
+                    obj.number = res.result.entCount;
+                    json.unshift(obj);
+                    json.pop();
+                    resolve(json);
+                });
+            });
+            return promise;
+        }
+    }
+    exports.StaticCom = StaticCom;
+});

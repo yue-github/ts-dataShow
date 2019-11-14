@@ -1,0 +1,47 @@
+import { Comunication } from "./comunication";
+import { Ajax } from "./ajax";
+
+export class DynamicCom extends Comunication {
+    public func1(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func2(arg: any) {
+        // throw new Error("Method not implemented.");
+        console.log(123)
+        let ajax = new Ajax();
+        ajax.getAjax('http://www.vocjs.com/api/web/mobile_org_info/barDiagramDevice', function(json){
+            console.log(json)
+            return json
+        },function(fail){
+            console.log(fail)
+            return fail
+        })
+
+    }
+    public func3(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func4(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func5(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func6(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public func7(arg: any) {
+        // throw new Error("Method not implemented.");
+    }
+    public ajax() {
+        let ajax = new Ajax();
+        let method = 'get';
+        // let url = 'http://www.vocjs.com/api/mobile/getuserinfo/';
+        let url = 'web/mobile_org_info/barDiagramDevice'
+        let data = '';
+        let dataType = 'json';
+        let res = ajax.isAjax(method, url, data, dataType)
+        
+        return res;   
+    }
+}

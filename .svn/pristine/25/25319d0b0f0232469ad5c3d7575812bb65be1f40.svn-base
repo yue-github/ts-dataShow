@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <!-- import stylesheet -->
+    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
+    <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+
+    <script type="text/javascript" src="./dst/jquery-3.2.1.min.js"></script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            background-color: #222b3c;
+        }
+
+        .container {
+            width: 1900px;
+            height: 900px;
+            margin: 0px auto;
+        }
+
+        .container header {
+            margin-bottom: 15px;
+            background-color: #2d3343;
+            height: 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            line-height: 50px;
+            color: white;
+        }
+
+        header .right {
+            width: 300px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .container main {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        main .left-box {
+            width: 530px;
+        }
+
+        main .right-box {
+            width: 530px;
+        }
+
+        main .middle-box {
+            width: 800px;
+            position: relative;
+        }
+
+        main .canvas-box-one {
+            width: 530px;
+            height: 380px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        main .canvas-box-two {
+            width: 530px;
+            height: 320px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        main .canvas-box-three {
+            width: 530px;
+            height: 270px;
+            background: rgb(45, 51, 67);
+            overflow: hidden;
+            background-color: #2d3343;
+        }
+
+        main .canvas-box-four {
+            width: 800px;
+            height: 260px;
+            overflow: hidden;
+        }
+
+        main .canvas-box-five {
+            width: 530px;
+            height: 260px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        main .canvas-box-six {
+            width: 530px;
+            height: 360px;
+            overflow: hidden;
+
+        }
+
+        .canvas-box-seven {
+            width: 800px;
+            height: 580px;
+            /* overflow: hidden; */
+            background-color: #2d3343;
+            margin-bottom: 20px;
+            /* position: absolute; */
+        }
+
+        main .canvas-box-eight {
+            width: 800px;
+            height: 135px;
+            overflow: hidden;
+        }
+
+        main .message-box {
+            box-sizing: border-box;
+            color: white;
+            font-size: 20px;
+            padding-left: 20px;
+            line-height: 40px;
+            margin-bottom: 15px;
+            background-color: #2d3343;
+            height: 100px;
+        }
+
+        ul,
+        li {
+            list-style: none;
+            display: block;
+        }
+
+        #scrollBox {
+            height: 45px;
+            /* margin:100px auto; */
+            overflow: hidden;
+        }
+
+        #scrollBox li {
+            font-size: 14px;
+            line-height: 15px;
+            margin-top: 7.5px;
+        }
+
+        .con1 {
+            cursor: pointer;
+        }
+
+        main .unormal-order-box {
+            box-sizing: border-box;
+            padding: 10px 0px 10px 20px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            color: white;
+            background-color: #2d3343;
+            height: 235px;
+        }
+
+        .unormal-order-box>div {
+            margin-bottom: 5px;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+        }
+
+        .popins {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            left: 0;
+            top:-100%;
+            z-index: 100000;
+            background-color: rgba(0, 0, 0, 0.7);
+            transition: all ease;
+
+        }
+
+        .window-box {
+            width: 80%;
+            height: 90%;
+            position: absolute;
+            box-shadow: 8px 4px 12px #ffffcc;
+        }
+
+        .window-box .map-window {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: #cecece;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 5px;
+            z-index: 1000000;
+        }
+
+        .window-title {
+            width: 100%;
+            padding-top: 20px;
+            background: #ffffff;
+        }
+
+        .enterprise {
+            margin-left: 30px;
+            font-size: 16px;
+        }
+
+        .select {
+            width: 200px;
+            margin-left: 30px;
+        }
+
+        .message {
+            width: 250px;
+            height: 50px;
+            border: 1px solid #cecece;
+            position: absolute;
+            right: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            padding: 0 10px;
+            box-shadow: 3px 3px 3px #cecece
+        }
+
+        .message-lab {
+            display: flex;
+            align-items: center;
+        }
+
+        .lab {
+            width: 5px;
+            height: 5px;
+            background: green;
+            margin-right: 10px;
+        }
+
+        .lab1{
+            width: 5px;
+            height: 5px;
+            background: red;
+            margin-right: 10px;
+        }
+
+        .photo {
+            width: 100%;
+            height: 200px;
+            margin-top: 100px;
+            clear: both;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* border: 1px solid #000; */
+        }
+
+        .photo-photo {
+            display: flex;
+            align-items: center;
+        }
+
+        .photo-style {
+            width: 70%;
+            height: 190px;
+            background-size: 100%;
+            /* background: red; */
+            border: 1px solid #cecece;
+        }
+
+        .photo-style1 {
+            width: 100px;
+            height: 100px;
+            /* border: 1px solid #000; */
+            box-sizing: border-box;
+            padding: 0 5px;
+        }
+
+        .photo-image {
+            height: 100px;
+            width: 100px;
+
+        }
+
+        .photo-name {
+            width: 100px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .connect {
+            width: 90px;
+            height: 20px;
+            background: rgba(153, 153, 153, 1);
+            margin-top: 10px;
+        }
+
+        .table {
+            width: 100%;
+            margin-top: 20px;
+            background: #ffffff;
+            padding-bottom: 20px;
+        }
+
+        .table-title {
+            font-size: 16px;
+            /* padding-left: 30px; */
+            padding: 20px 0 10px 30px;
+        }
+
+        .message-lab1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-style {
+            width: 802px;
+            margin: 0 auto;
+        }
+
+        .abnormal {
+            width: 100%;
+            margin-top: 20px;
+            background: #ffffff;
+            padding-bottom: 20px;
+        }
+
+        .abnormal-title {
+            font-size: 16px;
+            padding: 20px 0 10px 30px;
+        }
+
+        .scale {
+            position: absolute;
+            right: 0;
+            display: flex;
+        }
+
+        .add {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #66ccff;
+            color: #fff;
+        }
+
+        .reduce {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #66ccff;
+            color: #fff;
+            margin-left: 10px;
+        }
+
+        .refresh {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #66ccff;
+            color: #fff;
+            margin-left: 10px;
+        }
+
+        .info-box {
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left:0;
+            top:-100%;
+            /* top: -150%;
+            left: 50%; */
+            /* transform: translate(-50%, -50%); */
+            transition: all 1s;
+            z-index: 1000000;
+        }
+
+        .info-inbox {
+            width: 400px;
+            height: 300px;
+            overflow-y: auto;
+            background-color: #ffffff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* transform: translate(calc(-50% + 0.5), calc(-50% + 0.5)); */
+            border-radius: 5px;
+            font-size: 20px;
+            padding: 10px;
+            z-index: 1000000;
+        }
+
+        .info-date {
+            margin-top: 20px;
+        }
+
+        .info-contents {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .middle-box-bg {
+            width: 800px;
+            height: 600px;
+            opacity: 1;
+            display: flex;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+
+        .unormal-order-box::-webkit-scrollbar{
+            width:8px;
+            height:8px;
+            /**/
+            }
+            .unormal-order-box::-webkit-scrollbar-track{
+            background: rgb(239, 239, 239);
+            border-radius:2px;
+            }
+            .unormal-order-box::-webkit-scrollbar-thumb{
+            background: rgb(44, 155, 254);
+            border-radius:5px;
+            }
+            .unormal-order-box::-webkit-scrollbar-thumb:hover{
+            background: #333;
+            }
+            .unormal-order-box::-webkit-scrollbar-corner{
+            background: #179a16;
+            }
+
+        .middle-box-bg>p {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: blue;
+            border-radius: 100%;
+            left: 0;
+            top: 0;
+
+        }
+
+        .canvas-box-seven {
+            top: 0;
+            right: 0;
+            position: absolute;
+            ;
+        }
+
+        .scale {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .middle-box-map {
+            width: 800px;
+            height: 580px;
+            position: relative;
+            background: rgb(45, 51, 67);
+            overflow: hidden;
+        }
+
+        .ins-p {
+            cursor: pointer;
+        }
+
+        .loading {
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clear: both;
+            color: #ffffff;
+            z-index: 1000000;
+        }
+
+        .straining{
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 0%;
+            height: 0%;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clear: both;
+            color: #ffffff;
+            z-index: 1000000;
+        }
+
+        #preloader_1 {
+            position: relative;
+        }
+
+        #preloader_1 span {
+            display: block;
+            bottom: 0px;
+            width: 9px;
+            height: 5px;
+            background: #9b59b6;
+            position: absolute;
+            animation: preloader_1 1.5s infinite ease-in-out;
+        }
+
+        #preloader_1 span:nth-child(2) {
+            left: 11px;
+            animation-delay: .2s;
+        }
+
+        #preloader_1 span:nth-child(3) {
+            left: 22px;
+            animation-delay: .4s;
+        }
+
+        #preloader_1 span:nth-child(4) {
+            left: 33px;
+            animation-delay: .6s;
+        }
+
+        #preloader_1 span:nth-child(5) {
+            left: 44px;
+            animation-delay: .8s;
+        }
+
+        @keyframes preloader_1 {
+            0% {
+                height: 5px;
+                transform: translateY(0px);
+                background: #9b59b6;
+            }
+
+            25% {
+                height: 30px;
+                transform: translateY(15px);
+                background: #3498db;
+            }
+
+            50% {
+                height: 5px;
+                transform: translateY(0px);
+                background: #9b59b6;
+            }
+
+            100% {
+                height: 5px;
+                transform: translateY(0px);
+                background: #9b59b6;
+            }
+        }
+
+        .inc-box {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .inc-box-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            width: 150px;
+            height: 150px;
+            border: 1px solid #ffffcc;
+            box-shadow: 4px 2px 6px #ffffcc;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            box-sizing: border-box;
+            padding: 15px 5px;
+        }
+
+        .inc-box-block-child {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .inc-box-block-child span {
+            width: 100%;
+            overflow: hidden;
+            word-break: break-all;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            color: #ffffcc;
+        }
+
+        .incSeven {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            position: absolute;
+        }
+        .camouflage{
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            cursor:pointer;
+            z-index:10;
+            /* box-shadow:0px 0px 10px 1px red; */
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="left">累计运行48小时</div>
+            <div class="center" id='company'></div>
+            <div class="right">
+                <span id='date'></span>
+                <span id='time'></span>
+                <span id='day'></span>
+                <span class='hign'></span>
+            </div>
+        </header>
+        <main>
+            <div class="left-box">
+                <div class="canvas-box-one">
+                    <canvas id="canvas1" width="530" height="600"></canvas>
+                </div>
+                <div class="canvas-box-two">
+                    <canvas id="canvas2" width="530" height="600"></canvas>
+                </div>
+                <div class="canvas-box-three">
+                    <canvas id="canvas3" width="530" height="600"></canvas>
+                </div>
+            </div>
+            <div class="middle-box" id="middleBoxMain">
+                <div class="middle-box-map" style="position:relative">
+                    <div class='scale'>
+                        <img src="./images/add.png" alt="" class="add" style="cursor:pointer">
+                        <img src="./images/Reduce.png" alt="" class="reduce" style="cursor:pointer">
+                        <img src="./images/refresh.png" alt="" class="refresh" style="cursor:pointer">
+                    </div>
+                    <div class="incSeven">
+                        <div class="canvas-box-seven" style="position:absolute;left:0;top:0">
+                            <div class="middle-box-bg" id='middleBox'>
+                                <p v-for="(item,index) in middleBox" @click='show(item)'
+                                    :style="{left:item.left,top:item.top,background:item.color}" 
+                                    class="ins-p"
+                                    ref="pDom"
+                                    >
+                                   
+                                </p>
+                            </div>
+                            <canvas id="canvas7" width="800" height="600"></canvas>
+                            <div class="camouflage" ref="camouflage"></div>
+                        </div>
+                        <div class="inc-box">
+                            <div class="inc-box-block">
+                                <div class="inc-box-block-child"><span>{{insItem.LegalPersonName}}</span></div>
+                                <div class="inc-box-block-child"><span>{{insItem.Name}}</span></div>
+                                <div class="inc-box-block-child"><span>{{insItem.DiQuString}}</span></div>
+                            </div>
+                            <canvas id="inc-canvas" width="800" height="600"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div style="position: absolute;top:600px;left:0">
+                    <div class="canvas-box-four">
+                        <canvas id="canvas4" width="800" height="400"></canvas>
+                    </div>
+                    <div class="canvas-box-eight">
+                        <canvas id="canvas8" width="800" height="200"></canvas>
+                    </div>
+                </div>
+
+            </div>
+            <div class="right-box" id="right-box">
+                <div class="message-box">
+                    <h5>这里是消息通知</h5>
+                    <div id="scrollBox">
+                        <ul class="con1" v-for='(item,index) in message' class="info">
+                            <li @click="showList(item.Id)">
+                                <span>{{index+1}}_</span>
+                                <span>{{item.Title}} &nbsp;</span>
+                                <span>时间：{{item.SendDate}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-box" id='infoBox' @click="hideInfoBox">
+                    <div class="info-inbox" @click.stop="">
+                        <div class="info-title" id='infoTitle'></div>
+                        <div class="info-date" id='infoDate'></div>
+                        <div class="info-user" id='infoUser'></div>
+                        <div class="info-contents" id='infoContents'></div>
+                    </div>
+                </div>
+                <div class="unormal-order-box" id='abnormal'>
+                    <div class="title">7 异常数排名</div>
+                    <div v-for='(item,index) in abnormal'>
+                        <span>{{index+1}}、{{item.IncName}}</span>
+                        <span>{{item.TotalCoreAbnormalDataCount}}</span>
+                    </div>
+                </div>
+                <div class="canvas-box-five">
+                    <canvas id="canvas5" width="530" height="600"></canvas>
+                </div>
+                <div class="canvas-box-six">
+                    <canvas id="canvas6" width="530" height="600"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="app" style="z-index:1000">
+        <div class="popins">
+            <div class="popDom window-box" style="z-index:1000" @click.stop="">
+                <div class="map-window">
+                    <div class="window-title">
+                        <div class="enterprise">
+                            <span>{{company}}</span>
+                            <i-Select v-model="model1" class="select" id='selection' @on-change='exchange()'>
+                                <i-Option v-for="item in cityList" :value="item.AppId" :key="item.AppId">
+                                    {{ item.DeviceName }}
+                                </i-Option>
+                            </i-Select>
+                        </div>
+
+                        <div class="message" v-if='modal2'>
+                            <span>{{targetlist.NickName}}</span>
+                            <span>{{targetlist.number}}</span>
+                            <div class="message-lab">
+                                <div class="lab" v-if='targetlist.status == "正常"'></div>
+                                <div class="lab1" v-if='targetlist.status == "异常"'></div>
+                                <span>{{targetlist.status}}</span>
+                            </div>
+                        </div>
+                        <div class="photo">
+                            <!-- <div class="photo-photo" v-for='(item,index) in list'>
+                        <div class="photo-style">
+                            <img :src="item.image" alt="" class="photo-image">
+                            <div class="photo-name">{{item.name}}</div>
+                        </div>
+                        <div class="photo-style1" v-if='index+1 != list.length'>
+                            <div class="connect"></div>
+                        </div>
+                    </div> -->
+                            <!-- <img src="" alt="" class="photo-style"> -->
+                            <img :src=url+photo alt="" class="photo-style">
+                        </div>
+                    </div>
+                    <div class="table">
+                        <div class="table-title">
+                            监控数据
+                        </div>
+                        <i-Table border :columns="columns1" :data="data1" class="table-style">
+                            <template slot-scope="{ row }" slot="NickName">
+                                <strong>{{ row.NickName }}</strong>
+                            </template>
+                            <template slot-scope="{ row, index }" slot="action">
+                                <div class="message-lab1">
+                                    <div class="lab" v-if='row.status == "正常"'></div>
+                                    <div class="lab1" v-else></div>
+                                    <span>{{row.status}}</span>
+                                </div>
+                            </template>
+                        </i-Table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loading" id='loading'>
+        <h1>加载中，<span id="Time">5</span>S后出现</h1>
+        <div id="preloader_1">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <div class="straining" id='straining'>
+        <h1 id='strain'></h1>
+        <div id="preloader_1" v-if='modal2'>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <script data-main="./dst/main" src="./dst/require.js"></script>
+
+    <script>
+        function ajax(url, fnSuccess, fnFail) {
+            //创建对象
+            var xhr = new XMLHttpRequest();
+            //alert(xhr.readyState);:0
+            //链接服务器 请求方式   请求文件  异步或同步 异步
+            xhr.open("POST", url, true);
+            //alert(xhr.readyState);:1
+            xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+            //发送请求
+            xhr.send();
+            //alert(xhr.readyState);:1
+            //接收返回
+            xhr.onreadystatechange = function () {
+                //alert(xhr.readyState);:2,3,4
+                if (xhr.readyState === 4) {
+                    //xhr.status http状态码：
+                    //301：永久重定向
+                    //302：临时重定向   tamall.com=>www.tamall.com
+                    //304也是成功得
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        var json = null;
+                        json = JSON.parse(xhr.responseText);
+                        fnSuccess(json);
+                    } else {
+                        fnFail(xhr.status);
+                    }
+                }
+            }
+        }
+        // index为dom索引
+        
+        ajax('http://data-visualization.bayou-tech.cn/web/mobile_org_info/businessEquipmentList?accessToken=' + localStorage["token"], function (res) {
+            let result = res.result;
+            let referenceX = result[0].DeviceInfoList[0].Longitude;
+            let referenceY = result[0].DeviceInfoList[0].Latitude;
+            console.log(result)
+            let pageX = 266.55333,pageY = 330.8855;
+            middleBox.middleBox = result.map((item, index) => {
+                
+                let num = 0;
+                let color = 'green'
+                for (let a in item.DeviceInfoList) {
+                    if (item.DeviceInfoList[a].OnlineDesc != '在线') {
+                        num++
+                    }
+                }
+                if (num != 0) {
+                    color = 'red'
+                }
+                let l = referenceX - item.DeviceInfoList[0].Longitude ;
+                let left = l >= 0 ? 363.5565 + l * 107.69040641015 : 363.5565 - l * 107.69040631015;
+                let t = referenceY - item.DeviceInfoList[0].Latitude;
+                let top = t >= 0 ? 327.8855 + t * 145.69403094505 : 327.8855 - t * 145.69403094505;
+                return Object.assign({}, {
+                    left: left + 'px',
+                    top: top + 'px',
+                    color: color
+                }, item, arr[index]);
+            });
+            // .sort(function(){return Math.random()>0.5?-1:1});
+            // middleBox.middleBox.derangedArray();
+            middleBox.insItem = middleBox.middleBox[0];
+            middleBox.show(middleBox.insItem);
+            middleBox.cannvasLineGo(Number.parseFloat(middleBox.middleBox[0].left) + 1.5, Number.parseFloat(middleBox.middleBox[0].top) + 1.5, middleBox.middleBox[0]);
+        }, function (fail) {
+            console.log(fail)
+        })
+        //消息列表
+        ajax('http://data-visualization.bayou-tech.cn/web/message/messageList?accessToken=' + localStorage["token"] + '&length=10', function (res) {
+            scrollBox.message = res.result
+        }, function (fail) {
+            console.log(fail)
+        })
+
+        ajax('http://data-visualization.bayou-tech.cn/web/inc_evaluate/incEvaluate?accessToken=' + localStorage["token"], function (res) {
+            // console.log(res.result.IncEvaluateList)
+            tab.abnormal = res.result.IncEvaluateList
+        }, function (fail) {
+            console.log(fail)
+        })
+
+        ajax('http://data-visualization.bayou-tech.cn/web/mobile_org_info/mobileOrgInfo?accessToken=' + localStorage["token"], function (res) {
+            document.getElementById('company').innerHTML = res.result[0].Name + '数据平台'
+        }, function (fail) {
+            console.log(fail)
+        })
+        function setDT() {
+            var myDate = new Date();
+            function getdates() {
+                let date = myDate.toLocaleDateString()
+                let hh = myDate.getHours();
+                let mm = myDate.getMinutes();
+                let ss = myDate.getSeconds();
+                let day = myDate.getDay();
+
+                mm = mm < 10 ? '0' + mm : mm;
+                ss = ss < 10 ? '0' + ss : ss;
+                hh = parseInt(myDate.toLocaleString("chinese", { hour12: false }).match(/\d+(?=\:)/)[0])
+
+                document.getElementById('date').innerHTML = date
+                document.getElementById('time').innerHTML = hh + ':' + mm + ':' + ss
+                switch (day) {
+                    case 0:
+                        document.getElementById('day').innerHTML = '星期日'
+                        break;
+                    case 1:
+                        document.getElementById('day').innerHTML = '星期一'
+                        break;
+                    case 2:
+                        document.getElementById('day').innerHTML = '星期二'
+                        break;
+                    case 3:
+                        document.getElementById('day').innerHTML = '星期三'
+                        break;
+                    case 4:
+                        document.getElementById('day').innerHTML = '星期四'
+                        break;
+                    case 5:
+                        document.getElementById('day').innerHTML = '星期五'
+                        break;
+                    case 6:
+                        document.getElementById('day').innerHTML = '星期六'
+                        break;
+                }
+
+            }
+            getdates();
+        }
+        setDT();
+        setInterval(res => {
+            setDT();
+        }, 1000)
+        // 登錄獲取token，定時刷新
+        ajax('http://data-visualization.bayou-tech.cn/web/login?username=' + localStorage["phone"] + '&password=' + localStorage["password"], function (res) {
+            localStorage["token"] = res.result.access_token
+        }, function (fail) {
+            console.log(fail)
+        })
+
+        setInterval(function () {
+            ajax('http://data-visualization.bayou-tech.cn/web/login?username=' + localStorage["phone"] + '&password=' + localStorage["password"], function (res) {
+                localStorage["token"] = res.result.access_token
+                // console.log(localStorage["token"])
+            }, function (fail) {
+                console.log(fail)
+            })
+        }, 300000);
+
+        let middleBox = new Vue({
+            el: '#middleBoxMain',
+            data: {
+                timerRed:null,
+                timer:null,
+                timerHide:null,
+                node:null,
+                cxt:null,
+                insItem: {
+                    LegalPersonName: '李鸿宾',
+                    DiQuString: '广东省 中山市 中山市区 三角镇',
+                    Name: '中山黄龙运动器材有限公司'
+                },
+                listen: false,
+                middleBox: [
+                    {
+                        left: '0px',
+                        top: '0px',
+                        color: 'red'
+                    },
+                    {
+                        left: '0px',
+                        top: '0px',
+                        color: 'blue'
+                    }
+                ]
+            },
+            methods: {
+                show(item) {
+                    arr.photo = ''
+                    arr.company = item.Name
+                    arr.cityList = item.DeviceInfoList
+                    // arr.model1 = arr.cityList[0].DeviceName
+                    // console.log( arr.model1)
+                    localStorage["incId"] = item.OrgId;
+                    this.insItem = item;
+                    if(item.color == 'red'){
+                        this.warn(item);
+                    }else{
+                        clearInterval(this.timerRed);
+                        clearInterval(this.timerHide);
+                        this.$refs.camouflage.style['box-shadow'] = null;
+                    }
+                    // 将item对象给到画线函数，做一闪一闪效果
+                    this.cannvasLineGo(Number.parseFloat(item.left) + 1.5, Number.parseFloat(item.top) + 1.5, item);
+                    ajax('http://data-visualization.bayou-tech.cn/web/mobile_org_info/getincorginfo?accessToken=' + localStorage["token"] + '&incId=' + item.OrgId, function (res) {
+                        arr.photo = res.result.GovernFlowLink
+                    }, function (fail) {
+                        console.log(fail)
+                    })
+                },
+                easing(k){
+                    return Math.pow(k,3);
+                },
+                cannvasLineGo(targetX, targetY, item) {
+                   
+                    if(this.timer) 
+                        clearInterval(this.timer);
+                    if(this.cxt)
+                        this.cxt.clearRect(0, 0, 800, 600);
+                    targetX = targetX ? targetX - 160 : 0;
+                    targetY = targetY ? targetY - 160 : 0;
+                    let theTime = new Date();
+                    this.timer = setInterval(res=>{
+                        let timeDif = this.easing((new Date() - theTime) / 2000);
+                        if(timeDif >= 1){
+                            timeDif = 1;
+                            clearInterval(this.timer);
+                        }
+                        this.cannvasLineGoDraw(targetX * timeDif, targetY * timeDif);
+                    },1000/60);
+                },
+                cannvasLineGoDraw(targetX,targetY){
+                    this.node = document.getElementById('inc-canvas');
+                    this.cxt = this.node.getContext("2d");
+                    this.cxt.clearRect(0, 0, 800, 600);
+                    this.cxt.beginPath();
+                    this.cxt.moveTo(160, 160);
+                    this.cxt.lineTo(160 + targetX, 160 + targetY);
+                    this.cxt.lineWidth = 1;
+                    this.cxt.strokeStyle = "rgb(44, 155, 254)";
+                    this.cxt.stroke();
+                    this.cxt.closePath();
+                },
+                // 警告显示隐藏
+                warn(item){
+                    clearInterval(this.timerRed);
+                    let theTime = new Date(),timeDif;
+                     this.timerRed = setInterval(res=>{
+                        timeDif = (new Date() - theTime) / 1500;
+                        if(timeDif >= 1){
+                            timeDif = 1;
+                            clearInterval(this.timerRed);
+                            this.warnHide(item);
+                        }
+                        this.$refs.camouflage.style['box-shadow'] = `0px 0px ${20*timeDif}px 1px red`;
+                    },1000/60);
+               
+                    
+                },
+                warnHide(item){
+                    clearInterval(this.timerHide);
+                    let theTime1 = new Date(),timeDif1;
+                    this.timerHide = setInterval(res=>{
+                        timeDif1 = 1 - (new Date() - theTime1) / 1500;
+                        if(timeDif1 <= 0){
+                            timeDif1 = 0;
+                            clearInterval(this.timerHide);
+                            this.warn(item);
+                        }
+                        this.$refs.camouflage.style['box-shadow'] = `0px 0px ${40 * timeDif1}px 2px red`;
+                    },1000/60);
+                
+                }
+
+                
+
+            },
+            mounted() {
+                $('.camouflage').on('click',(res)=>{
+                    $('.popins').animate({ top: 0 });
+                });
+
+            },
+            updated(){
+                // this.middleBox.map((item,ind)=>{
+                //     if(item.DeviceInfoList){
+                //         if(item.color == 'red'){
+                //             this.warn(ind)
+                //         }
+                //     }
+                // })
+            }
+
+        })
+
+        let scrollBox = new Vue({
+            el: '#scrollBox',
+            data: {
+                modal1: false,
+                message: [],
+            },
+            methods: {
+                //打开消息框
+                showList(id) {
+                    console.log(id)
+                    const straining = document.querySelector('.straining');
+                    straining.style.cssText = 'width:100%;height:100%;'
+                    document.getElementById('strain').innerHTML = "加载中...";
+                    strain.modal2 = true;
+                    $('.info-box').animate({top:'0'});
+                    ajax('http://data-visualization.bayou-tech.cn/web/message/messageDetail?accessToken=' + localStorage["token"] + '&msgId=' + id, function (res) {
+                        console.log(res.result)
+                        document.getElementById('infoTitle').innerHTML = res.result.Title;
+                        document.getElementById('infoDate').innerHTML = '时间：' + res.result.SendDate;
+                        document.getElementById('infoUser').innerHTML = '发送人：' + res.result.SendUserName;
+                        document.getElementById('infoContents').innerHTML = res.result.Contents;
+                        document.getElementById('strain').innerHTML = "";
+                                straining.style.cssText = 'width:0%;height:0%;'
+                                strain.modal2 = false;
+                    }, function (fail) {
+                        console.log(fail)
+                    })
+                }
+            },
+        })
+
+        let tab = new Vue({
+            el: '#abnormal',
+            data: {
+                abnormal: [],
+            }
+        })
+
+       
+
+        let infoBoxNew = new Vue({
+            el: '#infoBox',
+            data: {
+                 
+            },
+            methods:{
+                // 隐藏消息框
+                hideInfoBox(){
+                    $('.info-box').animate({top:'-100%'});
+                }
+            }
+        })
+
+        let strain = new Vue({
+            el: '#straining',
+            data: {
+                modal2:false
+            }
+        })
+
+        let arr = new Vue({
+            el: '#app',
+            data: {
+                url: 'http://www.vocjs.com',
+                company: '',
+                modal1: false,
+                modal2:false,
+                toggleBoo: true,
+                model1: '',
+                value1: 100,
+                cityList: [],
+                photo: '',
+                targetlist:{},
+                columns1: [
+                    {
+                        title: '监控项目',
+                        slot: 'NickName',
+                        width: 200,
+                    },
+                    {
+                        title: '实时数据',
+                        key: 'number',
+                        width: 200,
+                    },
+                    {
+                        title: '标准范围',
+                        key: 'scope',
+                        width: 200,
+                    },
+                    {
+                        title: '状态',
+                        slot: 'action',
+                        width: 200,
+                        align: 'center'
+                    }
+                ],
+                data1: []
+            },
+            methods: {
+                exchange(){
+                    arr.modal2 = false;
+                    arr.data1= []
+                    console.log(arr.model1)
+                    if(arr.model1 != '' && arr.model1 != null && arr.model1 != undefined){
+                        const straining = document.querySelector('.straining');
+                        straining.style.cssText = 'width:100%;height:100%;'
+                        document.getElementById('strain').innerHTML = "加载中...";
+                        strain.modal2 = true;
+                        ajax('http://data-visualization.bayou-tech.cn/web/mobile_device_param/liveData?accessToken='+localStorage["token"]+'&appId='+arr.model1,function(res){
+                            console.log(res.result,555)
+                            ajax('http://data-visualization.bayou-tech.cn/web/mobile_device_param/getnewiotrundata?accessToken='+localStorage["token"]+'&appId='+arr.model1,function(res1){
+                                // console.log(res1,666)
+                                console.log(res1.result.DataItems)
+                                for(let a of res.result){
+                                    // console.log(typeof a.Name)
+                                    a.scope = a.LowLimit+'~'+a.UpLimit
+                                    for(let obj in res1.result.DataItems){
+                                        // console.log(typeof b)
+                                        // console.log(obj)
+                                        if(a.Name == obj){
+                                            a.number = res1.result.DataItems[obj]
+                                            if(res1.result.DataItems[obj] <= a.UpLimit && res1.result.DataItems[obj] >=a.LowLimit){
+                                                a.status = '正常'
+                                            }else{
+                                                a.status = '异常'
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                document.getElementById('strain').innerHTML = "";
+                                straining.style.cssText = 'width:0%;height:0%;'
+                                strain.modal2 = false;
+                                console.log(res.result)
+                                arr.modal2 = true;
+                                arr.data1 = res.result
+                                arr.targetlist = res.result[0]
+                            },function(fail){
+                                console.log(fail)
+                            })
+                        },function(fail){
+                            console.log(fail)
+                        })
+                    }  
+                }
+
+            },
+
+            mounted() {
+                
+                //获取本地的天气和日期需要做到两点：1.需要根据浏览器的IP查询所在的城市的名称，2.根据城市名称查询近七天的天气和星期，日期
+                var city;
+                //方法一：通过js直接获取
+                function tt() {
+                    $.ajax({
+                        url: 'http://pv.sohu.com/cityjson?ie=utf-8',
+                        dataType: "script",
+                        async: false,
+                        success: function () {
+                            city = returnCitySN.cname;
+                            //此时city的格式为“湖北省随州市”
+                            var a = city.indexOf("省", 0);
+                            if (a >= 0) {
+                                city = city.substring(a + 1);
+                            }
+                            var url = encodeURI("http://wthrcdn.etouch.cn/weather_mini?city=" + city);
+                            $.get({
+                                url: url,
+                                dataType: "json",
+                                async: false,
+                                success: function (data) {
+                                    if(data.data){
+                                        var todayWeather = data.data.forecast[0];
+                                        $(".hign").html(city + "&nbsp;&nbsp&nbsp&nbsp&nbsp&nbsp" + todayWeather.high);
+                                    }else{
+                                        $(".hign").html('');
+                                    }
+                                    
+                                }
+                            });
+                        }
+                    });
+
+                }
+                //方法二 ： 通过java后台发送查询城市请求（解决跨域问题） ，然后通过返回值查询当前城市的天气 
+                function refreshWeather() {
+                    $.get({
+                        url: "weather",
+                        dataType: "json",  //数据格式设置为jsonp
+                        async: false,
+                        success: function (data) {
+                            city = data.city;
+                        }
+                    });
+
+
+                    var url = encodeURI("http://wthrcdn.etouch.cn/weather_mini?city=" + city);
+                    $.get({
+                        url: url,
+                        dataType: "json",
+                        async: false,
+                        success: function (data) {
+                            var todayWeather = data.data.forecast[0];
+                            //document.getElementById("cl").innerHTML=todayWeather.low; 
+                            $("#cl").html("城市： " + city + "<br/>日期： " + todayWeather.date + "<br/>" + "温度" + todayWeather.high);
+                        }
+                    });
+                }
+                tt();
+            }
+        })
+
+        //定时滚动
+        var area = document.getElementById('scrollBox');
+        var lHeight = 24;
+        var time = 50;
+        area.innerHTML += area.innerHTML;
+        area.scrollTop = 0;
+        var timer;
+        function scrollMove() {
+            area.scrollTop++;
+            timer = setInterval("scrollUp()", time);
+        }
+
+        function scrollUp() {
+            if (area.scrollTop % lHeight == 0) {//滚动一行后，延时2秒
+                clearInterval(timer);
+                setTimeout("scrollMove()", 3000);
+            } else {
+                area.scrollTop++;
+                if (area.scrollTop >= area.scrollHeight / 2) {    //判断滚动高度,当滚动高度大于area本身的高度时，使其回到原点重新滚动    
+                    area.scrollTop = 0;
+                }
+            }
+        }
+
+        setTimeout("scrollMove()", 2000);
+        //加载动画
+        //使用匿名函数方法
+        function countDown() {
+            const loading = document.querySelector('.loading');
+            var time = document.getElementById("Time");
+            //获取到id为time标签中的内容，现进行判断
+            if (time.innerHTML == 0) {
+                //等于0时清除计时
+                document.getElementById('loading').innerHTML = "";
+                loading.style.cssText = 'width:0%;height:0%;background-color: rgba(0, 0, 0, 0);'
+                window.clearInterval(load);
+            } else {
+                time.innerHTML = time.innerHTML - 1;
+            }
+        }
+        //1000毫秒调用一次
+        let load = window.setInterval("countDown()", 1000);
+
+        window.onload = function () {
+            $('.popins').on('click', function () {
+                $(this).animate({ 'top': '-100%' }, 300);
+            });
+        }
+    </script>
+</body>
+
+</html>

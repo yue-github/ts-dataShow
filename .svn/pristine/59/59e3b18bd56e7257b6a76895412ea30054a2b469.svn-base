@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>登录</title>
+  <link rel="stylesheet" href="./css/login.css">
+</head>
+<body>
+  <div class="container">
+    <!-- 左边图片部分 -->
+    <div class="left">
+      <img class="left-image" src="./images/login-register.jpg" alt="image">
+    </div>
+    <!-- 左边图片部分结束 -->
+
+    <!-- 右边登录部分 -->
+    <div class="right">
+      <div class="header-box">
+        <span>用户登录</span> 
+      </div>
+      
+      <div class="login-box">
+        <div class="phone-number">手机号码：</div>
+        <div class="phone-input">
+          <input id="phone" type="text" placeholder="请输入手机号码" required autocomplete="off"/>
+        </div>
+        <div class="password-number">密码:</div>
+        <div class="password-input">
+          <input id="password" type="password" placeholder="请输入密码" required autocomplete="off"/>
+        </div>
+        <div id="tip" class="tip"></div>
+        <div class="forgot-pwd-box">
+          <img class="forgot-pwd" src="./images/forgot_pwd.png" alt="forgot_pwd">
+          <span> 忘记密码？</span>
+        </div>
+        <div class="button-box">
+          <button id="submit" class="button">登 录</button>
+        </div>
+        <div class="tip-box">
+          <span>没有账号？</span>
+          <a href="./register.html">去注册</a>
+        </div>
+      </div>
+    </div>
+    <!-- 右边登录部分结束 -->
+  </div>
+
+  <script src="./dst/js/login.js"></script>
+</body>
+</html>

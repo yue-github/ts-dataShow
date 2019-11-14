@@ -1,0 +1,172 @@
+import { Component2D } from "./component2d";
+
+export class Component7 extends Component2D {
+
+    private canvasJson: any; //JSON数据
+    private radius: number = 0;//半径
+    private img: any;   //图片
+    private moveX: number = 0; //x轴移动的像素
+    private moveY: number = 0; //y轴移动的像素
+    private scaleX: number = 1; //横向放大的倍数
+    private scaleY: number = 1; //竖直放大的倍数
+    private tempNode:  HTMLCanvasElement | null = null; //临时的canvas节点
+    private tempContext: CanvasRenderingContext2D | null = null; //临时的canvas对象
+
+    public constructor(id: string) {
+        //继承父类的构造方法
+        super(id);
+        //初始化一个图片对象待会使用
+        this.img = new Image();
+        //一个临时的canvas节点
+        this.tempNode = document.createElement('canvas');
+        //把原始节点宽高赋值给临时节点
+        this.tempNode.width = this.node.width;
+        this.tempNode.height = this.node.height;
+        this.radius = 10;
+        //一个临时的canvas对象
+        this.tempNode ? this.tempContext = this.tempNode.getContext('2d') : this.tempContext;
+        //初始化的时候调用画一次
+        this.draw();
+        //鼠标滚动变大变小
+        this.mouseWhell();
+        //鼠标点住地图移动
+        this.mouseDown();
+    }
+
+    public setTarget(arg: any): void {
+        //写个静态数据
+        let staticData: object[] = [{
+            name: '广州市',
+            mapX: 100,
+            mapY: 200
+        },{
+            name: '茂名市',
+            mapX: 300,
+            mapY: 300
+        },{
+            name: '汕尾市',
+            mapX: 600,
+            mapY: 400
+        }];
+
+        //判断传来的json数据是否有值，如果有则赋值，没有则暂时用静态数据
+        arg ? this.canvasJson = arg : this.canvasJson = staticData;
+
+        //启动计时器
+        if (!this.isPlaying())
+            this.start();
+    }
+
+    //更新画布参数
+    protected update(): void {
+        
+    }
+
+    
+    //更新参数后的渲染
+    protected render(): void {
+        
+    }
+
+    //画canvas
+    private draw(): void {
+        if(this.tempContext) {
+            // console.log(this.canvasJson)
+            this.tempContext.clearRect(0, 0, this.width, this.height);
+            this.tempContext.translate(this.moveX, this.moveY);
+            this.tempContext.scale(this.scaleX, this.scaleY);
+            this.img.src = 'https://education-test.bayou-tech.cn/img/map.png'
+            this.img.onload = () => {
+                this.tempContext.beginPath();
+                this.tempContext.drawImage(this.img, 0, 0, this.width, this.height);
+                // this.tempContext.beginPath();
+                // this.tempContext.fillStyle = 'blue';
+                // this.tempContext.arc(500, 200, 10, 0, 2 * Math.PI)
+                // this.tempContext.fill();
+                // this.tempContext.beginPath();
+                // this.tempContext.fillStyle = 'blue';
+                // this.tempContext.arc(700, 150, 10, 0, 2 * Math.PI)
+                // this.tempContext.fill();
+                for(let i in this.canvasJson){
+                    this.tempContext.beginPath();
+                    this.tempContext.fillStyle = 'blue';
+                    this.tempContext.arc(this.canvasJson[i].mapX, this.canvasJson[i].mapY, this.radius, 0, 2 * Math.PI)
+                    this.tempContext.fill();
+                }
+                this.context.clearRect(0, 0, this.width, this.height)
+                this.context.drawImage(this.tempNode, 0, 0, this.width, this.height)
+            }
+        }
+    }
+
+    //点击事件
+    // public clickMap(windowNode: HTMLElement,): void {
+    //     windowNode.onclick = (event: Event) => {
+    //         if (event.target == windowNode) {
+    //             windowNode.style.cssText = 'width:0%;height:0%;background-color: rgba(0, 0, 0, 0);'
+    //             // windowNode.style.cssText = 'width:0%;height:0%;background-color: pink;'
+    //         }
+    //     }
+        
+    // }
+
+    public click(windowNode: HTMLElement): void{
+        this.node.onclick =(event: Event) =>{
+            let x = event.pageX - this.node.offsetLeft
+            let y = event.pageY - this.node.offsetTop
+            // console.log(x)
+            // console.log(y)
+            for(let i in this.canvasJson){
+                if(x >= this.canvasJson[i].mapX-this.radius && x <= this.canvasJson[i].mapX + this.radius && y >=this.canvasJson[i].mapY - this.radius && y <= this.canvasJson[i].mapY + this.radius ){
+                    windowNode.style.cssText = 'top:50%'
+                }
+            }
+        }
+        windowNode.onclick = (event: Event) => {
+            if (event.target == windowNode) {
+                windowNode.style.cssText = 'width:0%;height:0%;background-color: rgba(0, 0, 0, 0);'
+                // windowNode.style.cssText = 'width:0%;height:0%;background-color: pink;'
+            }
+        }
+    }
+
+     //让鼠标滚动事件启动
+     private mouseWhell(): void {
+        this.node.onmousewheel = (e: WheelEvent) => {
+            // if (e.pageY >= this.node.offsetTop && e.pageY <= this.node.offsetHeight + this.node.offsetTop && e.pageX >= this.node.offsetLeft && e.pageX <= this.node.offsetLeft + this.node.offsetWidth) {
+                let valX = 20 / this.node.width;
+                let valY = 20 / this.node.height;
+                if (e.deltaY > 0) {
+                    this.scaleX = 1 + valX;
+                    this.scaleY = 1 + valY;
+                } else {
+                    this.scaleX = 1 - valX;
+                    this.scaleY = 1 - valY;
+                }
+                this.draw(); 
+                this.scaleX = 1;
+                this.scaleY = 1;
+                //阻止滚轮默认事件
+                return false;
+            // }
+        }
+     }
+
+     //鼠标的按下事件
+     private mouseDown(): void {
+        this.node.onmousedown = (e: MouseEvent) => {  
+            let cInitX = e.pageX;
+            let cInitY = e.pageY;
+            //监听鼠标移动事件
+            document.onmousemove = (e: MouseEvent) => {
+                this.moveX = e.pageX - cInitX;
+                this.moveY = e.pageY - cInitY;
+                cInitX = e.pageX;
+                cInitY = e.pageY;
+                this.draw();
+            }
+        }
+     }
+     
+     
+}

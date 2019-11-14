@@ -1,0 +1,193 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+define(["require", "exports", "./component2d"], function (require, exports, component2d_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var Component7 = /** @class */ (function (_super) {
+        __extends(Component7, _super);
+        function Component7(id) {
+            var _this = 
+            //继承父类的构造方法
+            _super.call(this, id) || this;
+            _this.radius = 0; //半径
+            _this.num = 0;
+            _this.moveX = 0; //x轴移动的像素
+            _this.moveY = 0; //y轴移动的像素
+            _this.x = 0;
+            _this.y = 0;
+            _this.scaleX = 1; //横向放大的倍数
+            _this.scaleY = 1; //竖直放大的倍数
+            _this.xx = 0;
+            _this.yy = 0;
+            _this.tempNode = null; //临时的canvas节点
+            _this.tempContext = null; //临时的canvas对象
+            //初始化一个图片对象待会使用
+            _this.img = new Image();
+            //一个临时的canvas节点
+            _this.tempNode = document.createElement('canvas');
+            //把原始节点宽高赋值给临时节点
+            _this.tempNode.width = _this.node.width;
+            _this.tempNode.height = _this.node.height;
+            _this.radius = 10;
+            //一个临时的canvas对象
+            _this.tempNode ? _this.tempContext = _this.tempNode.getContext('2d') : _this.tempContext;
+            //初始化的时候调用画一次
+            _this.draw();
+            //鼠标滚动变大变小
+            // this.mouseWhell();
+            //鼠标点住地图移动
+            _this.mouseDown();
+            return _this;
+        }
+        Component7.prototype.setTarget = function (arg) {
+            //写个静态数据
+            var staticData = [{
+                    name: '广州市',
+                    mapX: 100,
+                    mapY: 200
+                }, {
+                    name: '茂名市',
+                    mapX: 300,
+                    mapY: 300
+                }, {
+                    name: '汕尾市',
+                    mapX: 600,
+                    mapY: 400
+                }];
+            //判断传来的json数据是否有值，如果有则赋值，没有则暂时用静态数据
+            arg ? this.canvasJson = arg : this.canvasJson = staticData;
+            this.addTimeSlice(0, 6, "easeOutCubic");
+            //启动计时器
+            if (!this.isPlaying())
+                this.start();
+        };
+        //更新画布参数
+        Component7.prototype.update = function () {
+            var a = 1;
+            this.num = a * this.getTime(0);
+        };
+        //更新参数后的渲染
+        Component7.prototype.render = function () {
+            // this.context.clearRect(0, 0, this.width, this.height);
+            // this.drawring(this.num)
+        };
+        //画canvas
+        Component7.prototype.draw = function () {
+            var _this = this;
+            if (this.tempContext) {
+                // console.log(this.canvasJson)
+                this.tempContext.clearRect(0, 0, this.width, this.height);
+                this.tempContext.translate(this.moveX, this.moveY);
+                this.tempContext.scale(this.scaleX, this.scaleY);
+                console.log(this.scaleX);
+                console.log(this.scaleY);
+                this.img.src = 'https://education-test.bayou-tech.cn/img/map.png';
+                this.img.onload = function () {
+                    _this.tempContext.beginPath();
+                    _this.tempContext.drawImage(_this.img, 0, 0, _this.width, _this.height);
+                    for (var i in _this.canvasJson) {
+                        _this.tempContext.beginPath();
+                        _this.tempContext.fillStyle = 'blue';
+                        _this.tempContext.arc(_this.canvasJson[i].mapX, _this.canvasJson[i].mapY, _this.radius, 0, 2 * Math.PI);
+                        _this.tempContext.fill();
+                    }
+                    // this.drawring(2)
+                    _this.context.clearRect(0, 0, _this.width, _this.height);
+                    _this.context.drawImage(_this.tempNode, 0, 0, _this.width, _this.height);
+                };
+            }
+        };
+        Component7.prototype.drawring = function (num) {
+            for (var i in this.canvasJson) {
+                this.tempContext.beginPath();
+                this.tempContext.arc(this.canvasJson[i].mapX, this.canvasJson[i].mapY, this.radius + num * 10, 0, Math.PI * 2);
+                this.tempContext.closePath();
+                this.tempContext.lineWidth = 1; //线条宽度
+                this.tempContext.strokeStyle = 'blue'; //颜色
+                this.tempContext.stroke();
+            }
+        };
+        Component7.prototype.click = function (windowNode) {
+            var _this = this;
+            this.node.onclick = function (event) {
+                var x = event.pageX - _this.node.offsetLeft;
+                var y = event.pageY - _this.node.offsetTop;
+                console.log(_this.scaleX);
+                for (var i in _this.canvasJson) {
+                    if (x >= _this.canvasJson[i].mapX * (1 + _this.xx) + _this.x - _this.radius && x <= _this.canvasJson[i].mapX * (1 + _this.xx) + _this.x + _this.radius && y >= _this.canvasJson[i].mapY * (1 + _this.xx) + _this.y - _this.radius && y <= _this.canvasJson[i].mapY * (1 + _this.xx) + _this.y + _this.radius) {
+                        windowNode.style.cssText = 'top:50%';
+                    }
+                }
+            };
+            windowNode.onclick = function (event) {
+                if (event.target == windowNode) {
+                    windowNode.style.cssText = 'width:0%;height:0%;background-color: rgba(0, 0, 0, 0);';
+                    // windowNode.style.cssText = 'width:0%;height:0%;background-color: pink;'
+                }
+            };
+        };
+        //让鼠标滚动事件启动
+        Component7.prototype.mouseWhell = function (create, reduce, refresh) {
+            var _this = this;
+            create.onclick = function (event) {
+                _this.scaleX = 1;
+                _this.scaleY = 1;
+                _this.xx += 0.1;
+                _this.scaleX += 0.1;
+                _this.scaleY += 0.1;
+                _this.draw();
+            };
+            reduce.onclick = function (event) {
+                _this.scaleX = 1;
+                _this.scaleY = 1;
+                _this.xx -= 0.1;
+                _this.scaleX -= 0.1;
+                _this.scaleY -= 0.1;
+                _this.draw();
+            };
+            refresh.onclick = function (event) {
+                _this.scaleX = 1;
+                _this.scaleY = 1;
+                _this.xx = 0;
+                _this.x = 0;
+                _this.y = 0;
+                _this.tempNode.width = _this.node.width;
+                _this.tempNode.height = _this.node.height;
+                _this.draw();
+            };
+        };
+        //鼠标的按下事件
+        Component7.prototype.mouseDown = function () {
+            var _this = this;
+            this.node.onmousedown = function (e) {
+                _this.scaleX = 1;
+                _this.scaleY = 1;
+                var cInitX = e.pageX;
+                var cInitY = e.pageY;
+                //监听鼠标移动事件
+                document.onmousemove = function (e) {
+                    _this.moveX = e.pageX - cInitX;
+                    _this.moveY = e.pageY - cInitY;
+                    _this.x = _this.moveX + _this.x;
+                    _this.y = _this.moveY + _this.y;
+                    cInitX = e.pageX;
+                    cInitY = e.pageY;
+                    _this.draw();
+                };
+            };
+        };
+        return Component7;
+    }(component2d_1.Component2D));
+    exports.Component7 = Component7;
+});

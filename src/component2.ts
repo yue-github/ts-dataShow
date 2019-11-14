@@ -1,0 +1,204 @@
+import { Component2D } from "./component2d";
+import { Ajax } from "./ajax";
+
+export class Component2 extends Component2D {
+    // 定义需要用到的变量
+    private canvas: HTMLCanvasElement | null;
+    private ctx: CanvasRenderingContext2D | null
+    // canvas的属性
+    private cWidth: number = 0;
+    private cHeight: number = 0;
+    private cMargin: number = 0;
+    private cSpace: number = 0;
+    // 原点的坐标
+    private originX: number = 0;
+    private originY: number = 0;
+    // 柱状图属性
+    private tobalDots: number = 0; // 柱状图的y轴为几等分
+    private dotSpace: number = 0; // y轴每个格子的宽度
+    private maxValue: number = 0; // x轴的最大值
+    private totalXNumber: number = 0; // 折线图的x轴为几等分
+
+    private data:any = null
+    protected dataArr: any = null;
+
+    
+    
+    
+    public setTarget(arg: any): void {
+        // console.log(arg)
+        let arr =[
+            {
+                name:'初装',
+                number:6
+            },
+            {
+                name:'调试',
+                number:2
+            },
+            {
+                name:'故障',
+                number:10
+            },
+            {
+                name:'保修',
+                number:3
+            },
+            {
+                name:'维修',
+                number:7
+            }
+        ];
+
+       
+            arg.then(res=>{
+                this.data = res 
+                
+            })
+            arg ? this.dataArr = this.data : this.dataArr = arr
+            
+       
+       
+
+        if (!this.isPlaying()) {
+            this.start();
+        }
+    }
+    
+    public constructor(id: string) {
+        super(id);
+         // 设置canvas的高度
+        this.node.height = 600;
+        this.addTimeSlice(0, 2, "easeOutCubic");
+    }
+
+    protected update(): void {
+        if(this.dataArr){
+            for(let index in this.dataArr){
+                this.dataArr[index].number = this.data[index].number * this.getTime(0)
+            }
+
+        }
+    }
+    
+    protected render(): void {
+        if(this.dataArr) {
+            
+            this.initData(this.dataArr);
+        }
+       
+    }
+
+
+
+    private initData(dataArr: any): void {
+        this.canvas = this.node;
+        this.canvas.style.background = '#2D3343';
+        this.ctx = this.context;
+        this.cMargin = 60;
+        this.cSpace = 80;
+        this.cWidth = this.width - this.cMargin;
+        this.cHeight = this.height - this.cMargin -500;
+        this.originX = this.cSpace;
+        this.originY = this.cMargin ;
+        this.tobalDots = dataArr.length;
+
+        for (let i = 0; i < dataArr.length; i++) {
+            let dotVal = dataArr[i].number;
+            if (dotVal > this.maxValue) {
+                this.maxValue = dotVal;
+            }
+        }
+        this.maxValue += 1;
+
+        this.totalXNumber = 6;
+        this.dotSpace = (this.originX + this.cWidth-this.originY) / this.totalXNumber;
+        this.dotSpace = Number(this.dotSpace.toFixed(0));
+
+        this.drawingAxes()
+        this.drawMarkers()
+        this.drawLineAnimate('#2C9BFE','number',dataArr);
+    }
+
+    //绘制坐标轴
+    protected drawingAxes() {
+        // 设置样式
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeStyle = '#777F92';
+
+        // 绘制X轴
+        this.drawLine(this.originX, this.originY, this.originX + this.cWidth-this.originY , this.originY);
+        // 绘制Y轴
+        // this.drawLine(this.originX, this.originY, this.originX, this.cMargin)
+        // this.drawLine(this.originX, this.originY, this.originX , this.originY+300);
+    }
+
+    protected drawMarkers() {
+        // 设置样式
+        this.ctx.font = '14px Arial';
+        this.ctx.fillStyle = '#a5aabd';
+        this.ctx.strokeStyle = '#a5aabd';
+
+        // 绘制y轴上的横线
+        // yInterval: y轴上横线的间隔
+        // 设置y轴文本的对齐方式
+        this.ctx.textAlign = 'right';
+        // 绘制线段及添加文本
+        for (let i = 0; i < this.dataArr.length; i++) {
+            let markerVal: string = this.dataArr[i].name;
+            // 设置文字与y轴上横线的位置
+            let xMarker: number = this.originX - 20; // 减去5表示相对于x往左移动5个像素
+            let yMarker: number = this.originX + this.cHeight * (i)
+            this.ctx.fillText(markerVal, xMarker, yMarker + 10, this.cSpace);
+        }
+
+        // 绘制x轴的竖线
+        this.ctx.textAlign = 'center';
+        // 设置样式
+        this.ctx.strokeStyle = '#C8CDD6';
+        this.ctx.font = '14px Arial';
+        for (let i = 0; i < this.totalXNumber; i++) {
+            // 每条竖线下面显示的文字
+            let text: number = i * 4;
+            let xMarker: number = this.originX + this.dotSpace * i;
+            let yMarker: number = this.originY - 30;
+            this.drawLine(xMarker, this.originY, xMarker, this.cHeight+10);
+            // 绘制文字
+            this.ctx.fillText(text.toString(), xMarker, yMarker, this.cSpace);
+        }
+    }
+
+    protected drawLineAnimate(color: string,type:string,dataArr:any) {
+        // console.log(this.dataArr)
+        this.ctx.strokeStyle = color;
+            // 绘制柱子
+        this.ctx.beginPath()
+        for (let i = 0; i < dataArr.length; i++) {
+            // 取出数据中的值
+            let dotVal: number = dataArr[i].number;
+            let x =   (this.dotSpace * (dotVal/ 4));
+            let y = this.cHeight / 2 
+
+            this.ctx.fillRect( this.originX, this.originY+this.cHeight * (i)+y/2+5, x, y );
+        }
+        this.ctx.stroke();
+        this.ctx.closePath();
+    }
+
+
+
+
+    protected drawLine(x1,y1,x2,y2): void {
+       this.ctx.beginPath();
+       this.ctx.moveTo(x1, y1);
+       this.ctx.lineTo(x2, y2);
+       this.ctx.stroke();
+       this.ctx.closePath();
+    }
+        
+    
+
+
+
+    
+}

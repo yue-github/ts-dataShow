@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <!-- import stylesheet -->
+    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
+    <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+    <script type="text/javascript" src="./dst/jquery-3.2.1.min.js"></script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            background-color: #222b3c;
+        }
+
+        .container {
+            width: 1900px;
+            height: 900px;
+            margin: 0px auto;
+        }
+
+        .container header {
+            margin-bottom: 15px;
+            background-color: #2d3343;
+            height: 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            line-height: 50px;
+            color: white;
+        }
+
+        header .right {
+            width: 300px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .container main {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        main .left-box {
+            width: 530px;
+        }
+
+        main .right-box {
+            width: 530px;
+        }
+
+        main .middle-box {
+            width: 800px;
+        }
+
+        main .canvas-box-one {
+            width: 530px;
+            height: 380px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        main .canvas-box-two {
+            width: 530px;
+            height: 320px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        main .canvas-box-three {
+            width: 530px;
+            height: 270px;
+            background: rgb(45, 51, 67);
+            overflow: hidden;
+            background-color: #2d3343;
+        }
+
+        main .canvas-box-four {
+            width: 800px;
+            height: 260px;
+            overflow: hidden;
+        }
+
+        main .canvas-box-five {
+            width: 530px;
+            height: 260px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        main .canvas-box-six {
+            width: 530px;
+            height: 360px;
+            overflow: hidden;
+
+        }
+
+        main .canvas-box-seven {
+            width: 800px;
+            height: 580px;
+            overflow: hidden;
+            background-color: #2d3343;
+            margin-bottom: 20px;
+            /* position: absolute; */
+        }
+
+        main .canvas-box-eight {
+            width: 800px;
+            height: 135px;
+            overflow: hidden;
+        }
+
+        main .message-box {
+            box-sizing: border-box;
+            color: white;
+            font-size: 20px;
+            padding-left: 20px;
+            line-height: 40px;
+            margin-bottom: 15px;
+            background-color: #2d3343;
+            height: 100px;
+        }
+
+        main .unormal-order-box {
+            box-sizing: border-box;
+            padding: 10px 0px 10px 20px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            color: white;
+            background-color: #2d3343;
+            height: 235px;
+        }
+
+        .unormal-order-box>div {
+            margin-bottom: 5px;
+        }
+
+        .window-box {
+            background-color: rgba(0, 0, 0, 0.7);
+            /* width: 1900px;
+            height: 1000px; */
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: -150%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* transform: translate(calc(-50% + 0.5), calc(-50% + 0.5)); */
+            transition: all 1s;
+        }
+
+        .window-box .map-window {
+            width: 80%;
+            height: 90%;
+            overflow-y: auto;
+            background-color: #cecece;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* transform: translate(calc(-50% + 0.5), calc(-50% + 0.5)); */
+            border-radius: 5px;
+            /* transition: all 1s; */
+        }
+
+        .window-title {
+            width: 100%;
+            padding-top: 20px;
+            background: #ffffff;
+        }
+
+        .enterprise {
+            margin-left: 30px;
+            font-size: 16px;
+        }
+
+        .select {
+            width: 200px;
+            margin-left: 30px;
+        }
+
+        .message {
+            width: 250px;
+            height: 50px;
+            border: 1px solid #cecece;
+            position: absolute;
+            right: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            padding: 0 10px;
+            box-shadow: 3px 3px 3px #cecece
+        }
+
+        .message-lab {
+            display: flex;
+            align-items: center;
+        }
+
+        .lab {
+            width: 5px;
+            height: 5px;
+            background: blue;
+            margin-right: 10px;
+        }
+
+        .photo {
+            width: 100%;
+            height: 200px;
+            margin-top: 100px;
+            clear: both;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-photo {
+            display: flex;
+            align-items: center;
+        }
+
+        .photo-style {
+            width: 100px;
+            height: 150px;
+            color: #000
+                /* border: 1px solid #000; */
+        }
+
+        .photo-style1 {
+            width: 100px;
+            height: 100px;
+            /* border: 1px solid #000; */
+            box-sizing: border-box;
+            padding: 0 5px;
+        }
+
+        .photo-image {
+            height: 100px;
+            width: 100px;
+
+        }
+
+        .photo-name {
+            width: 100px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .connect {
+            width: 90px;
+            height: 20px;
+            background: rgba(153, 153, 153, 1);
+            margin-top: 10px;
+        }
+
+        .table {
+            width: 100%;
+            margin-top: 20px;
+            background: #ffffff;
+            padding-bottom: 20px;
+        }
+
+        .table-title {
+            font-size: 16px;
+            /* padding-left: 30px; */
+            padding: 20px 0 10px 30px;
+        }
+
+        .message-lab1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-style {
+            width: 802px;
+            /* text-align: center; */
+            margin: 0 auto;
+            /* padding-bottom: 10px; */
+        }
+
+        .abnormal {
+            width: 100%;
+            margin-top: 20px;
+            background: #ffffff;
+            padding-bottom: 20px;
+        }
+
+        .abnormal-title {
+            font-size: 16px;
+            padding: 20px 0 10px 30px;
+        }
+
+        .scale {
+            position: absolute;
+            right: 0;
+            display: flex;
+        }
+
+        .add {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        .reduce {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+            color: #fff;
+            margin-left: 10px;
+        }
+
+        .refresh {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+            color: #fff;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="left">累计运行48小时</div>
+            <div class="center">广州市工况实时监控数据平台</div>
+            <div class="right">
+                <span>2019-08-17</span>
+                <span>11:23:33</span>
+                <span>星期一</span>
+                <span class="hign">25C</span>
+            </div>
+        </header>
+        <main>
+            <div class="left-box">
+                <div class="canvas-box-one">
+                    <canvas id="canvas1" width="530" height="600"></canvas>
+                </div>
+                <div class="canvas-box-two">
+                    <canvas id="canvas2" width="530" height="600"></canvas>
+                </div>
+                <div class="canvas-box-three">
+                    <canvas id="canvas3" width="530" height="600"></canvas>
+                </div>
+            </div>
+            <div class="middle-box">
+                <div class="canvas-box-seven">
+                    <div class='scale'>
+                        <img src="./images/add.png" alt="" class="add">
+                        <img src="./images/Reduce.png" alt="" class="reduce">
+                        <img src="./images/Reduce.png" alt="" class="refresh">
+                    </div>
+                    <canvas id="canvas7" width="800" height="600"></canvas>
+                </div>
+                <div class="canvas-box-four">
+                    <canvas id="canvas4" width="800" height="400"></canvas>
+                </div>
+                <div class="canvas-box-eight">
+                    <canvas id="canvas8" width="800" height="200"></canvas>
+                </div>
+            </div>
+            <div class="right-box">
+                <div class="message-box">
+                    <h5>这里是消息通知</h5>
+                </div>
+                <div class="unormal-order-box" id='app'>
+                    <div class="title">7 异常数排名</div>
+                    <div v-for="(item,index) in abnormal"><span>{{index+1}}、 {{item.IncName}}</span>
+                        <span>{{item.TotalCoreAbnormalDataCount}}</span></div>
+                    <!-- <div><span>2、 天河区</span> <span>43434</span></div>
+                    <div><span>2、 天河区</span> <span>43434</span></div>
+                    <div><span>2、 天河区</span> <span>43434</span></div> -->
+                </div>
+                <div class="canvas-box-five">
+                    <canvas id="canvas5" width="530" height="600"></canvas>
+                </div>
+                <div class="canvas-box-six">
+                    <canvas id="canvas6" width="530" height="600"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="app" class="window-box">
+        <div class="map-window">
+            <div class="window-title">
+                <div class="enterprise">
+                    <span>XXXX企业</span>
+                    <i-Select v-model="model1" class="select">
+                        <i-Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}
+                        </i-Option>
+                    </i-Select>
+                </div>
+                <div class="message">
+                    <span>喷淋</span>
+                    <span>0.75</span>
+                    <div class="message-lab">
+                        <div class="lab"></div>
+                        <span>正常</span>
+                    </div>
+                </div>
+                <div class="photo">
+                    <div class="photo-photo" v-for='(item,index) in list'>
+                        <div class="photo-style">
+                            <img :src="item.image" alt="" class="photo-image">
+                            <div class="photo-name">{{item.name}}</div>
+                        </div>
+                        <div class="photo-style1" v-if='index+1 != list.length'>
+                            <div class="connect"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table">
+                <div class="table-title">
+                    监控数据
+                </div>
+                <i-Table border :columns="columns1" :data="data1" class="table-style">
+                    <template slot-scope="{ row }" slot="name">
+                        <strong>{{ row.name }}</strong>
+                    </template>
+                    <template slot-scope="{ row, index }" slot="action">
+                        <div class="message-lab1">
+                            <div class="lab"></div>
+                            <span>正常</span>
+                        </div>
+                    </template>
+                    </i-able>
+            </div>
+            <!-- <div>123</div> -->
+            <!-- <InputNumber :max="1000" :min="1" v-model="value1"></InputNumber> -->
+            <!-- <div class="abnormal">
+                <div class="abnormal-title">
+                    异常统计
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <script data-main="./dst/main" src="./dst/require.js"></script>
+
+    <script>
+        function ajax(url, fnSuccess, fnFail) {
+            //创建对象
+            var xhr = new XMLHttpRequest();
+            //alert(xhr.readyState);:0
+            //链接服务器 请求方式   请求文件  异步或同步 异步
+            xhr.open("POST", url, true);
+            //alert(xhr.readyState);:1
+            xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+            //发送请求
+            xhr.send();
+            //alert(xhr.readyState);:1
+            //接收返回
+            xhr.onreadystatechange = function () {
+                //alert(xhr.readyState);:2,3,4
+                if (xhr.readyState === 4) {
+                    //xhr.status http状态码：
+                    //301：永久重定向
+                    //302：临时重定向   tamall.com=>www.tamall.com
+                    //304也是成功得
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        var json = null;
+                        json = JSON.parse(xhr.responseText);
+                        fnSuccess(json);
+                    } else {
+                        fnFail(xhr.status);
+                    }
+                }
+            }
+        }
+
+        ajax('http://data-visualization.bayou-tech.cn/web/inc_evaluate/incEvaluate?accessToken=' + localStorage["token"], function (res) {
+            // console.log(res.result.IncEvaluateList)
+            arr.abnormal = res.result.IncEvaluateList
+        }, function (fail) {
+            console.log(fail)
+        })
+
+        let arr = new Vue({
+            el: '#app',
+            data: {
+                abnormal: [],
+                model1: '',
+                value1: 100,
+                cityList: [
+                    {
+                        value: 'New York',
+                        label: 'New York'
+                    },
+                    {
+                        value: 'London',
+                        label: 'London'
+                    },
+                    {
+                        value: 'Sydney',
+                        label: 'Sydney'
+                    },
+                    {
+                        value: 'Ottawa',
+                        label: 'Ottawa'
+                    },
+                ],
+                list: [
+                    {
+                        name: '车间活动',
+                        image: 'http://pic1.win4000.com/wallpaper/c/53cdd1f7c1f21.jpg'
+                    },
+                    {
+                        name: '离心风机',
+                        image: 'http://pic1.win4000.com/wallpaper/c/53cdd1f7c1f21.jpg'
+                    },
+                    {
+                        name: 'UV',
+                        image: 'http://pic1.win4000.com/wallpaper/c/53cdd1f7c1f21.jpg'
+                    },
+                    {
+                        name: '喷淋塔',
+                        image: 'http://pic1.win4000.com/wallpaper/c/53cdd1f7c1f21.jpg'
+                    },
+
+                ],
+                columns1: [
+                    {
+                        title: '监控项目',
+                        slot: 'name',
+                        width: 200,
+                    },
+                    {
+                        title: '实时数据',
+                        key: 'record',
+                        width: 200,
+                    },
+                    {
+                        title: '标准范围',
+                        key: 'range',
+                        width: 200,
+                    },
+                    {
+                        title: '状态',
+                        slot: 'action',
+                        width: 200,
+                        align: 'center'
+                    }
+                ],
+                data1: [
+                    {
+                        name: '离心风机',
+                        record: 0.75,
+                        range: '0.60-0.90'
+                    },
+                    {
+                        name: '离心风机',
+                        record: 0.75,
+                        range: '0.60-0.90'
+                    }
+                ]
+            },
+            methods: {
+
+            },
+            mounted() {
+                //获取本地的天气和日期需要做到两点：1.需要根据浏览器的IP查询所在的城市的名称，2.根据城市名称查询近七天的天气和星期，日期
+                var city;
+                //方法一：通过js直接获取
+                function tt() {
+                    $.ajax({
+                        url: 'http://pv.sohu.com/cityjson?ie=utf-8',
+                        dataType: "script",
+                        async: false,
+                        success: function () {
+                            //console.log(returnCitySN);
+                            city = returnCitySN.cname;
+                            //此时city的格式为“湖北省随州市”
+                            var a = city.indexOf("省", 0);
+                            if (a >= 0) {
+                                city = city.substring(a + 1);
+                            }
+                            var url = encodeURI("http://wthrcdn.etouch.cn/weather_mini?city=" + city);
+                            $.get({
+                                url: url,
+                                dataType: "json",
+                                async: false,
+                                success: function (data) {
+                                    var todayWeather = data.data.forecast[0];
+                                    //document.getElementById("cl").innerHTML=todayWeather.low; 
+                                    $(".hign").html(todayWeather.high);
+                                    console.log(todayWeather.high)
+                                }
+                            });
+                        }
+                    });
+
+                }
+                //方法二 ： 通过java后台发送查询城市请求（解决跨域问题） ，然后通过返回值查询当前城市的天气 
+                function refreshWeather() {
+                    $.get({
+                        url: "weather",
+                        dataType: "json",  //数据格式设置为jsonp
+                        async: false,
+                        success: function (data) {
+                            city = data.city;
+                        }
+                    });
+
+
+                    var url = encodeURI("http://wthrcdn.etouch.cn/weather_mini?city=" + city);
+                    $.get({
+                        url: url,
+                        dataType: "json",
+                        async: false,
+                        success: function (data) {
+                            var todayWeather = data.data.forecast[0];
+                            //document.getElementById("cl").innerHTML=todayWeather.low; 
+                            $("#cl").html("城市： " + city + "<br/>日期： " + todayWeather.date + "<br/>" + "温度" + todayWeather.high);
+
+                        }
+                    });
+                }
+                tt();
+                console.log($);
+            }
+
+
+        })
+    </script>
+</body>
+
+</html>
